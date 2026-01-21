@@ -1,0 +1,12 @@
+{
+    "name": "Mini Project HW1 - Ripple Effect",
+    "icons": [
+        {
+            "src": "assets/ripple-icon.jpg",
+            "type": "image/jpg",
+            "sizes": "512x512"
+        }
+    ],
+    "orientation": "Natural",
+    "display": "standalone"
+}
