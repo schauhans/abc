@@ -23,7 +23,7 @@ function draw(){
     background(173, 216, 230); //prevent buildup
 
     for(let r of ripples){
-        stroke(0, r.alpha);
+        stroke(255, r.alpha);
         circle(r.x, r.y, r.size);
         r.size += 3;
         r.alpha -= 5;

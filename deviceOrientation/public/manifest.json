@@ -1,0 +1,12 @@
+{
+  "name": "Windows Corner Hit",
+  "icons": [
+    {
+      "src": "assets/smiski-icon.png",
+      "type": "image/png",
+      "sizes": "784x784"
+    }
+  ],
+  "orientation": "Natural",
+  "display": "standalone"
+}
