@@ -21,8 +21,21 @@ httpsServer = https.createServer(options, app);
 const { Server } = require("socket.io"); //socket.io setup
 const io = new Server(httpsServer); 
 
-io.on("connection", (socket) => {
+io.on("connection", function(socket) {
     console.log("a user connected");
+
+    socket.on("messageFromClient", function(msg) {
+        console.log("message: " + msg);
+        let msgForAllClients = {
+            sender: "unknown",
+            message: msg
+        };
+        io.emit("messageFromServer", msgForAllClients);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("user disconnected");
+    });
 });
 
 httpsServer.listen(portHTTPS, function (req, res) {

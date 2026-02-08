@@ -1,0 +1,145 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffe6f0; 
+}
+
+h1 {
+    font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+    color: purple;
+    text-align: center;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+/*#chatWrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}*/
+
+#chatThreadList {
+    list-style: none;   /* removes bullets */
+    padding: 0;
+}
+
+#nameWrapper {
+    flex: 0 0 17%; /* 17% of the height */
+    background-color: #d4f5d4; /* Green background */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/*#threadWrapper {
+    flex: 1 1 70%; 
+    overflow-y: auto;
+    margin-top: 10px;
+}*/
+
+
+.sender {
+    color: purple;
+    font-weight: bold;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], button {
+    flex: 0 0 13%; /* 13% of the height */
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #ffb6c1; /* Light pink button */
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff8fa3;
+}
+
+html, body {
+    height: 100%;
+}
+
+.meme {
+    display: block;
+    margin-top: 8px;
+    max-width: 220px;
+    border-radius: 8px;
+}
+
+/* Make the page a column layout */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Let the chat wrapper fill the screen */
+  #chatWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* important so the middle section can scroll */
+  }
+  
+  /* Make the thread scrollable and leave space for the fixed input bar */
+  #threadWrapper {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    padding-bottom: 80px; /* space for the input bar */
+    padding-left: 10px;
+  }
+  
+  /* Stick the message form to the bottom */
+  #messageForm {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+  
+    background: white;
+    border-top: 1px solid #ddd;
+  
+    /* helps on iOS safe area (notch / home bar) */
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  
+  /* Make input fill the bar */
+  #messageInput {
+    flex: 1;
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  #keywordList{
+    color: "#ffe6f0";
+    font-weight: "italic";
+  }
+  

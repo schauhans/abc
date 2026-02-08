@@ -36,9 +36,9 @@ function handleOrientation(e) {
   const b = document.querySelector("#beta");
   const g = document.querySelector("#gamma");
 
-  if (a) a.innerText = "alpha: " + Math.round(alpha);
-  if (b) b.innerText = "beta: " + Math.round(beta);
-  if (g) g.innerText = "gamma: " + Math.round(gamma);
+  //if (a) a.innerText = "alpha: " + Math.round(alpha);
+  //if (b) b.innerText = "beta: " + Math.round(beta);
+  //if (g) g.innerText = "gamma: " + Math.round(gamma);
 }
 
 // --- game start (called from requestOrientation.js) ---
@@ -143,8 +143,7 @@ function update() {
 
      renderBall();
 
-  // score check
-     if (ballInActiveCorner()) {
+     if (ballInActiveCorner()) { //if in the corner update score and reset corner + ball
           score++;
           centerBall();
           pickCorner();
@@ -164,19 +163,19 @@ function getCornerPoint() {
      const w = board.clientWidth;
      const h = board.clientHeight;
    
-     // actual corner point (board coordinates)
+     // actual corner point (everytime corner gets reset need to call)
      if (activeCorner === "TL") return { x: 0, y: 0 };
      if (activeCorner === "TR") return { x: w, y: 0 };
      if (activeCorner === "BL") return { x: 0, y: h };
-     return { x: w, y: h }; // "BR"
+     return { x: w, y: h }; // only other option is "BR" lol
 }
    
 function positionCornerGlow() {
      const w = board.clientWidth;
      const h = board.clientHeight;
    
-     // place the glow slightly inset so it's visible
-     const size = 34; // must match CSS #cornerGlow size
+     
+     const size = 34; 
      const half = size / 2;
    
      let x = 0, y = 0;
