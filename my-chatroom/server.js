@@ -17,6 +17,8 @@ const memes = {
     "im so scared rn": "assets/imSoScaredRnMeme.png",
     "chat am i muted": "assets/chatAmIMutedMeme.png",
     "twin": "assets/twinMeme.png",
+    "u know ball": "assets/uKnowBallMeme.png",
+    "pause": "assets/pauseMeme.png",
 };
 
 io.on('connection', (socket) => {
