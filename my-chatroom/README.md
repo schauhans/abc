@@ -25,5 +25,5 @@ Instructions on how to use:
 
 Explaination of Chatroom features:
 - If user mentions any of the speical keywords, the corresponding meme will be send right after
-- List of keywords: 'chat am i muted', 'im so scared rn', 'son', 'ok mijo', 'cookie', 'twin'
+- List of keywords: 'chat am i muted', 'im so scared rn', 'son', 'ok mijo', 'cookie', 'twin', 'u know ball', 'pause'
 - User can input name they want to be displayed at the top
