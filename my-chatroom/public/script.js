@@ -1,6 +1,12 @@
 console.log("script loaded");
 
-let socket = io();
+//let socket = io(); //only works w localhost
+
+if (location.hostname.toLowerCase().startsWith('browsercircus') || location.hostname.toLowerCase().startsWith('www')){
+    socket = io({path: "/sanjana/port-4220/socket.io"});  
+} else{
+    socket = io(); 
+}
 
 //use eventLIstener for submit of message form
 let formElm = document.querySelector("#messageForm");
