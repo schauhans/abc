@@ -1,14 +1,25 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-
+//const http = require('http');
+const https = require("https");
+//const { Server } = require('socket.io');
+const fs = require("fs");
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+/*const server = http.createServer(app);
+const io = new Server(server);*/
 
 const PORT = 4220;
 
 app.use(express.static('public'));
+
+const options = {
+    key: fs.readFileSync("keys-for-local-https/localhost-key.pem"),
+    cert: fs.readFileSync("keys-for-local-https/localhost.pem"),
+};
+
+httpsServer = https.createServer(options, app);
+
+const { Server } = require("socket.io"); //socket.io setup
+const io = new Server(httpsServer); 
 
 const memes = {
     "cookie": "assets/cookieMeme.png",
