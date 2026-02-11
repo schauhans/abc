@@ -59,6 +59,6 @@ io.on('connection', (socket) => {
     });
 });
 
-httpsServer.listen(portHTTPS, function (req, res) {
-    console.log("HTTPS Server started at port", portHTTPS);
+httpsServer.listen(PORT, function (req, res) {
+    console.log("HTTPS Server started at port", PORT);
 });
