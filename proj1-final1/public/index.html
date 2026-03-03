@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Quartet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── SCREEN 1: LOBBY — default screen while waiting for all 4 players ── -->
+  <div id="screen-lobby" class="screen">
+
+    <h1>String Quartet</h1>
+    <p class="subtitle">Live Networked Performance</p>
+
+    <!-- script.js sets #your-role-name text on the "assigned" event -->
+    <div class="role-badge">
+      <span class="label">You are</span>
+      <span id="your-role-name">Connecting…</span>
+    </div>
+
+    <!-- Each slot ID matches "slot-" + the role name sent by the server -->
+    <p class="section-label">Lobby</p>
+    <div id="players-grid">
+      <div class="slot" id="slot-violin1">
+        <span class="slot-name">Violin I</span>
+        <span class="slot-dot"></span>
+      </div>
+      <div class="slot" id="slot-violin2">
+        <span class="slot-name">Violin II</span>
+        <span class="slot-dot"></span>
+      </div>
+      <div class="slot" id="slot-viola">
+        <span class="slot-name">Viola</span>
+        <span class="slot-dot"></span>
+      </div>
+      <div class="slot" id="slot-cello">
+        <span class="slot-name">Cello</span>
+        <span class="slot-dot"></span>
+      </div>
+    </div>
+
+    <p class="status-msg" id="lobby-msg">Waiting for all players to join…</p>
+
+  </div>
+
+
+  <!-- ── SCREEN 2: FULL — shown when server emits "full"; disconnect is handled server-side ── -->
+  <div id="screen-full" class="screen hidden">
+    <h1>Concert Hall Full</h1>
+    <p>All four parts are taken.</p>
+    <p>Please try again when a spot opens.</p>
+    <p class="dimmed">Disconnecting shortly…</p>
+  </div>
+
+
+  <!-- ── SCREEN 3: PERFORMANCE — shown once all 4 players join ── -->
+  <div id="screen-performance" class="screen hidden">
+
+    <!-- Updated by script.js: shows countdown, "Currently playing", or "Your part in Xs" -->
+    <div id="status-bar">
+      <span id="status-text">Ready — press Play to begin</span>
+    </div>
+
+    <div class="role-badge">
+      <span class="label">You are</span>
+      <span id="perf-role-name">—</span>
+    </div>
+
+    <!-- script.js adds class "active" (gray → blue) when clicked -->
+    <button id="play-btn">&#9654; Play</button>
+
+  </div>
+
+  <!-- Big 3,2,1 overlay — shown on top of all screens during countdown, separate from status bar -->
+  <div id="countdown-overlay" class="hidden">
+    <span id="countdown-number"></span>
+  </div>
+
+  <!-- socket.io.js must load before script.js since script.js calls io() -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

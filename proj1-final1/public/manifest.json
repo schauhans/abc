@@ -1,0 +1,12 @@
+{
+    "name": "Sanjana's String Quartet",
+    "icons": [
+      {
+        "src": "assets/smiski.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "orientation": "Natural",
+    "display": "standalone"
+}

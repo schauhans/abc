@@ -1,0 +1,255 @@
+/* ── Design tokens ── */
+:root {
+  --bg:         #f2f2f6;
+  --card:       #ffffff;
+  --blue:       #5589e8;
+  --blue-glow:  rgba(85, 137, 232, 0.35);
+  --pink:       #e07aad;
+  --gray-light: #dddde8;
+  --gray-mid:   #9898aa;
+  --gray-dark:  #2c2c3a;
+  --shadow:     0 2px 14px rgba(0, 0, 0, 0.07);
+  --radius:     14px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--gray-dark);
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Screens — only one visible at a time, toggled by script.js ── */
+.screen {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  text-align: center;
+}
+
+.hidden { display: none !important; }
+
+/* ── Typography ── */
+h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--gray-dark);
+}
+
+.subtitle {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--gray-mid);
+  margin-top: -0.8rem;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--gray-mid);
+  align-self: flex-start;
+  margin-bottom: -0.6rem;
+}
+
+.status-msg {
+  font-size: 0.9rem;
+  color: var(--gray-mid);
+}
+
+.dimmed {
+  font-size: 0.85rem;
+  color: var(--gray-light);
+}
+
+/* ── Role badge — pink border highlights your assigned instrument ── */
+.role-badge {
+  background: var(--card);
+  border: 2px solid var(--pink);
+  border-radius: var(--radius);
+  padding: 0.9rem 2rem;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+.role-badge .label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: var(--gray-mid);
+  margin-bottom: 0.3rem;
+}
+
+#your-role-name,
+#perf-role-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--pink);
+  text-transform: capitalize;
+}
+
+/* ── Players grid ── */
+#players-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  width: 100%;
+}
+
+.slot {
+  background: var(--card);
+  border: 2px solid var(--gray-light);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+/* script.js toggles this class via classList.toggle("occupied", bool) */
+.slot.occupied {
+  border-color: var(--blue);
+  background: #eef2fd;
+}
+
+.slot-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Small dot indicator: gray = empty, blue = occupied */
+.slot-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gray-light);
+  transition: background 0.3s ease;
+}
+
+.slot.occupied .slot-dot {
+  background: var(--blue);
+}
+
+/* ── Full screen ── */
+#screen-full h1 {
+  color: var(--pink);
+}
+
+#screen-full p {
+  color: var(--gray-mid);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ── Performance screen ── */
+
+/* Pink left border gives the status bar a subtle "stage light" feel */
+#status-bar {
+  width: 100%;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--pink);
+}
+
+#status-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-dark);
+}
+
+/* Round play button: gray by default, blue when .active is added by script.js */
+#play-btn {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  background: var(--gray-light);
+  color: var(--gray-mid);
+  box-shadow: var(--shadow);
+  transition: background 0.35s ease, color 0.35s ease,
+              box-shadow 0.35s ease, transform 0.1s ease;
+  margin-top: 0.5rem;
+}
+
+#play-btn:hover {
+  transform: scale(1.05);
+}
+
+#play-btn.active {
+  background: var(--blue);
+  color: #ffffff;
+  box-shadow: 0 4px 24px var(--blue-glow);
+}
+
+#play-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+/* Pink and pulsing when the user needs to click to join their part */
+#play-btn.prompted {
+  background: var(--pink);
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(224, 122, 173, 0.4);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.07); }
+}
+
+/* ── Countdown overlay — position: fixed so it sits above everything ── */
+#countdown-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* clicks pass through to buttons beneath */
+  z-index: 10;
+  background: rgba(242, 242, 246, 0.55);
+}
+
+#countdown-number {
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--pink);
+  line-height: 1;
+}
+
+/* Class toggled by script.js on each new number to restart the animation */
+#countdown-number.pop {
+  animation: pop 0.9s ease forwards;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  40%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1);   opacity: 0; }
+}
