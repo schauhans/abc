@@ -19,7 +19,7 @@ Instructions on how to use:
     node server.js
     ```
 
-5. Open your browser and go to `http://localhost:3000` to access the chatroom.
+5. Open your browser and go to `https://localhost:3000` to access the chatroom.
 
 6. Invite others to join by sharing the URL.
 

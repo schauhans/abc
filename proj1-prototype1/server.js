@@ -23,7 +23,7 @@ const io = new Server(httpsServer);
 
 const CHORD_NOTES = ["G3", "B3", "D4", "G4", "B4", "D5"];
 
-const players = {}; // socketId -> { note, instrument }
+const players = {}; // socketId -> { note, instrument , noteIndex}
 
 const INSTRUMENTS = ["violin", "cello", "flute", "oboe", "clarinet", "horn"];
 
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
 
         const allReady = Object.values(players).every((p) => p.ready);
         if (allReady && Object.keys(players).length > 0) {
-            // Send a precise future timestamp everyone should start playing at
+            // Send a precise future timestamp everyone should start playing at (asked chatgpt)
             const startAt = Date.now() + 2000; // 2 second buffer
             io.emit("play_chord", { startAt });
             console.log(`All ready — chord starts at ${startAt}`);
@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log(`Player left: ${socket.id}`);
         delete players[socket.id];
-        io.emit("players_update", buildPlayerList());
+        io.emit("players_update", buildPlayerList()); //update list for everyone
     });
 });
 
@@ -80,7 +80,7 @@ function buildPlayerList() {
         note,
         instrument,
         noteIndex,
-        ready: !!ready,
+        ready: !!ready, //!! ready removes undefined -> into a t/f value and keeps all values the same
     }));
 }
 
