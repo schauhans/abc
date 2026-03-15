@@ -1,10 +1,10 @@
 const socket = io({ path: '/sanjana/port-4220/socket.io' });
 
 const ROLES = {
-    "birds-rain":  { name: "Birds & Rain", image: "/assets/birds-rain-img.jpg", loop: "/audio/birds-rain-loop.wav" },
-    "handpan1":    { name: "Handpan I",    image: "/assets/handpan-img.jpg",    loop: "/audio/handpan1-loop.wav" },
-    "handpan2":    { name: "Handpan II",   image: "/assets/handpan-img.jpg",    loop: "/audio/handpan2-loop.wav" },
-    "wind-chimes": { name: "Wind Chimes",  image: "/assets/wind-chimes-img.jpg",loop: "/audio/wind-chimes-loop.wav" },
+    "birds-rain":  { name: "Birds & Rain", image: "assets/birds-rain-img.jpg", loop: "audio/birds-rain-loop.wav" },
+    "handpan1":    { name: "Handpan I",    image: "assets/handpan-img.jpg",    loop: "audio/handpan1-loop.wav" },
+    "handpan2":    { name: "Handpan II",   image: "assets/handpan-img.jpg",    loop: "audio/handpan2-loop.wav" },
+    "wind-chimes": { name: "Wind Chimes",  image: "assets/wind-chimes-img.jpg",loop: "audio/wind-chimes-loop.wav" },
 };
 
 const screenWaiting = document.getElementById("screen-waiting");
