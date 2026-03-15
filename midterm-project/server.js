@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = 4220;
 
 // Disable caching so browsers always get the latest JS/HTML during development
 app.use((_req, res, next) => {
