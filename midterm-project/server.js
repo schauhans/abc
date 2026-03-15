@@ -29,9 +29,7 @@ const options = {
 const httpsServer = https.createServer(options, app);
 
 const { Server } = require("socket.io");
-const io = new Server(httpsServer, {
-    path: '/sanjana/port-4220/socket.io'
-});
+const io = new Server(httpsServer);
 
 // players: socketId -> { id, playerNum, role, volume }
 const players = {};
