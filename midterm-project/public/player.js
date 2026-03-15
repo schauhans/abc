@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io({ path: '/sanjana/port-4220/socket.io' });
 
 const ROLES = {
     "birds-rain":  { name: "Birds & Rain", image: "/assets/birds-rain-img.jpg", loop: "/audio/birds-rain-loop.wav" },

@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io({ path: '/sanjana/port-4220/socket.io' });
 
 //asked ai to help debug connection issues
 const statusEl = document.getElementById("socket-status");
