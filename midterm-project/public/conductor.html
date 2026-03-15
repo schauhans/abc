@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conductor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="conductor-header">
+    <h1>Conductor</h1>
+    <p class="subtitle">Assign roles and control players</p>
+    <p id="socket-status" style="font-size:0.8rem; color: red;">⚪ Not connected</p>
+    <p id="debug-log" style="font-size:0.75rem; color: gray; white-space: pre-wrap;"></p>
+  </div>
+
+  <!-- Global controls -->
+  <div class="global-controls">
+    <div class="control-section">
+      <span class="section-label">All Players</span>
+      <div class="btn-row">
+        <button id="stop-all-btn"   class="btn btn-mute">⏸ Stop All</button>
+        <button id="resume-all-btn" class="btn btn-resume">▶ Resume All</button>
+      </div>
+    </div>
+
+    <div class="control-section">
+      <span class="section-label">Scene Presets</span>
+      <div class="btn-row">
+        <button class="btn btn-preset" data-preset="Forest">🌲 Forest</button>
+        <button class="btn btn-preset" data-preset="Zen">🧘 Zen</button>
+        <button class="btn btn-preset" data-preset="Rain">🌧️ Rain</button>
+        <button class="btn btn-preset" data-preset="Handpans">🎵 Handpans</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="no-players-msg" class="empty-msg">No players connected yet.</div>
+  <div id="player-list"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="conductor.js"></script>
+
+</body>
+</html>

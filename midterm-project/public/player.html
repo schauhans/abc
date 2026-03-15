@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambient Player</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Shown while waiting for conductor to assign a role -->
+  <div id="screen-waiting" class="screen">
+    <h1>Ambient Environment</h1>
+    <p class="subtitle">Waiting for the conductor to assign you a role…</p>
+    <p class="player-id">You are <span id="player-id-display">connecting…</span></p>
+  </div>
+
+  <!-- Shown after role is assigned — tap once to unlock audio on iOS -->
+  <div id="screen-role" class="screen hidden fullscreen-role">
+    <div id="role-bg" class="role-bg"></div>
+    <div id="role-overlay" class="role-overlay">
+      <span id="role-name"></span>
+      <button id="audio-btn" class="btn btn-player">Tap to Start Sound</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="player.js"></script>
+
+</body>
+</html>
