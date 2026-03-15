@@ -1,7 +1,13 @@
 {
     "name": "Ambient Environment",
     "short_name": "Ambient",
-    "icons": [],
+    "icons": [
+        {
+            "src": "assets/peaceful.png",
+            "sizes": "any",
+            "type": "image/png"
+        }
+    ],
     "orientation": "portrait",
     "display": "standalone",
     "background_color": "#0d1117",
