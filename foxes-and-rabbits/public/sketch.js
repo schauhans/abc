@@ -17,9 +17,7 @@ let currentLongitude = 0;
 
 
 // ── GAME STATE ────────────────────────────────────────────
-// Initialise socket at module load time so the join-button click handler
-// can always call socket.emit() regardless of whether p5 setup() has run.
-let socket = io();
+let socket;
 let myRole     = null;   // 'fox' | 'rabbit'
 let myPassword = null;   // rabbit's unique catch-password (from server)
 let myName     = '';
@@ -78,6 +76,7 @@ function setup() {
     frameRate(30);
 
     console.log('[setup] canvas created:', canvas.width, 'x', canvas.height);
+    socket = io();
 
     socket.on('connect', () => {
         console.log('[socket] connected, id:', socket.id);
@@ -823,9 +822,8 @@ function showToast(message) {
 
 
 // ── JOIN BUTTON — runs independently of p5 setup() ────────
-// Decoupled so a socket.io load failure can't prevent the button from activating.
-// `socket` is declared at module scope and will be initialised by setup() before
-// the user can ever tap Join Game.
+// Decoupled from socket.io: `socket` is undefined here but setup() initialises it
+// before any human can fill the form and tap Join Game.
 (function initJoinButton() {
     const nameInput = document.getElementById('input-name');
     const checkBox  = document.getElementById('check-location');
