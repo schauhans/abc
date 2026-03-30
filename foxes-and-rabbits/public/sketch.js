@@ -97,7 +97,7 @@ function setup() {
         showToast('Connection lost — reconnecting...');
     });
 
-    socket.on('reconnect', (attempt) => {
+    socket.io.on('reconnect', (attempt) => {
         console.log('[socket] reconnected after', attempt, 'attempt(s)');
     });
 
@@ -412,29 +412,6 @@ function setup() {
     // ════════════════════════════════════════════════════
     //  BUTTON LISTENERS
     // ════════════════════════════════════════════════════
-
-    // ── join view ─────────────────────────────────────────
-    const nameInput = document.getElementById('input-name');
-    const checkBox  = document.getElementById('check-location');
-    const joinBtn   = document.getElementById('btn-join');
-
-    function checkJoinReady() {
-        joinBtn.disabled = !(nameInput.value.trim().length > 0 && checkBox.checked);
-    }
-    nameInput.addEventListener('input',  checkJoinReady);
-    checkBox.addEventListener('change',  checkJoinReady);
-
-    joinBtn.addEventListener('click', () => {
-        myName = nameInput.value.trim();
-        console.log('[join] joining as:', myName);
-        socket.emit('joinGame', { name: myName });
-        showView('view-lobby');
-
-        // Request GPS permission immediately so the browser prompt appears now,
-        // giving maximum time to get a fix before the game starts.
-        console.log('[join] calling requestGPS()');
-        requestGPS();
-    });
 
     // ── fox: place trap at current GPS position ───────────
     document.getElementById('btn-place-trap').addEventListener('click', () => {
@@ -843,3 +820,32 @@ function showToast(message) {
     clearTimeout(toastTimeout);
     toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }
+
+
+// ── JOIN BUTTON — runs independently of p5 setup() ────────
+// Decoupled so a socket.io load failure can't prevent the button from activating.
+// `socket` is declared at module scope and will be initialised by setup() before
+// the user can ever tap Join Game.
+(function initJoinButton() {
+    const nameInput = document.getElementById('input-name');
+    const checkBox  = document.getElementById('check-location');
+    const joinBtn   = document.getElementById('btn-join');
+    if (!nameInput || !checkBox || !joinBtn) return; // safety guard
+
+    function checkJoinReady() {
+        joinBtn.disabled = !(nameInput.value.trim().length > 0 && checkBox.checked);
+    }
+    nameInput.addEventListener('input',  checkJoinReady);
+    checkBox.addEventListener('change',  checkJoinReady);
+
+    joinBtn.addEventListener('click', () => {
+        myName = nameInput.value.trim();
+        console.log('[join] joining as:', myName);
+        socket.emit('joinGame', { name: myName });
+        showView('view-lobby');
+        // Request GPS immediately so the browser prompt appears now,
+        // giving maximum time to get a fix before the game starts.
+        console.log('[join] calling requestGPS()');
+        requestGPS();
+    });
+})();
