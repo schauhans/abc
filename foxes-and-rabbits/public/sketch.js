@@ -17,7 +17,10 @@ let currentLongitude = 0;
 
 
 // ── GAME STATE ────────────────────────────────────────────
-let socket;
+// Initialise socket at module load so the join-button click handler can call
+// socket.emit() before p5 setup() has run. Guard with typeof in case
+// socket.io.js hasn't loaded (keeps the button enable/disable logic working).
+let socket = typeof io === 'function' ? io() : null;
 let myRole     = null;   // 'fox' | 'rabbit'
 let myPassword = null;   // rabbit's unique catch-password (from server)
 let myName     = '';
@@ -76,7 +79,7 @@ function setup() {
     frameRate(30);
 
     console.log('[setup] canvas created:', canvas.width, 'x', canvas.height);
-    socket = io();
+    if (!socket) socket = io();
 
     socket.on('connect', () => {
         console.log('[socket] connected, id:', socket.id);
@@ -822,8 +825,8 @@ function showToast(message) {
 
 
 // ── JOIN BUTTON — runs independently of p5 setup() ────────
-// Decoupled from socket.io: `socket` is undefined here but setup() initialises it
-// before any human can fill the form and tap Join Game.
+// socket is initialised at module scope above; this IIFE just wires up the
+// enable/disable logic and the click handler.
 (function initJoinButton() {
     const nameInput = document.getElementById('input-name');
     const checkBox  = document.getElementById('check-location');
@@ -839,7 +842,7 @@ function showToast(message) {
     joinBtn.addEventListener('click', () => {
         myName = nameInput.value.trim();
         console.log('[join] joining as:', myName);
-        socket.emit('joinGame', { name: myName });
+        if (socket) socket.emit('joinGame', { name: myName });
         showView('view-lobby');
         // Request GPS immediately so the browser prompt appears now,
         // giving maximum time to get a fix before the game starts.
