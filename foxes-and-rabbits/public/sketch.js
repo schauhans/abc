@@ -17,7 +17,9 @@ let currentLongitude = 0;
 
 
 // ── GAME STATE ────────────────────────────────────────────
-let socket;
+// Initialise socket at module load time so the join-button click handler
+// can always call socket.emit() regardless of whether p5 setup() has run.
+let socket = io();
 let myRole     = null;   // 'fox' | 'rabbit'
 let myPassword = null;   // rabbit's unique catch-password (from server)
 let myName     = '';
@@ -76,8 +78,6 @@ function setup() {
     frameRate(30);
 
     console.log('[setup] canvas created:', canvas.width, 'x', canvas.height);
-    console.log('[setup] connecting socket...');
-    socket = io();
 
     socket.on('connect', () => {
         console.log('[socket] connected, id:', socket.id);
