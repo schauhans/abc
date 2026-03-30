@@ -1,0 +1,15 @@
+{
+  "name": "foxes-and-rabbits",
+  "version": "1.0.0",
+  "description": "A GPS-based Foxes and Rabbits game (inspired by Sharks and Minnows)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  }
+}

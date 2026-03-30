@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <title>Foxes & Rabbits — Host</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+  <!--
+    HOST PAGE — admin-only screen, not a player.
+    Reachable at /host.html
+    Views: host-lobby → host-game → host-ended
+  -->
+
+
+  <!-- ── HOST LOBBY VIEW ───────────────────────────────────
+       Shows joining players in real time.
+       "Start Game" becomes active once enough players have joined. -->
+  <div id="view-host-lobby" class="view">
+
+    <h1>Foxes and Rabbits</h1>
+    <p class="small-accent" style="margin-top:4px;">Host / Admin</p>
+
+    <p class="accent-text" style="margin-top:20px;">Waiting for players...</p>
+
+    <!-- TODO: update via socket 'lobbyUpdate' -->
+    <p class="player-count-text" id="host-player-count">0 players joined</p>
+
+    <div class="host-player-list" id="host-lobby-list">
+      <!-- Populated dynamically — one .host-player-row per joined player.
+      Example structure:
+      <div class="host-player-row">
+        <span>Player Name</span>
+        <span class="small-accent">Waiting...</span>
+      </div>
+      -->
+    </div>
+
+    <!-- TODO: emit 'startGame' to server; disabled until minimum player count met -->
+    <button class="btn" id="btn-start-game" disabled>Start Game</button>
+
+    <p class="small-accent" id="start-game-hint" style="margin-top:8px;">
+      Need at least 5 players to start (1 fox : 4 rabbits)
+    </p>
+
+  </div>
+
+
+  <!-- ── HOST GAME VIEW ────────────────────────────────────
+       Live dashboard during the hunt. Read-only — host cannot
+       interact with the game, only monitor it. -->
+  <div id="view-host-game" class="view hidden">
+
+    <h1>Foxes and Rabbits</h1>
+
+    <!-- Key stats at a glance -->
+    <div class="host-stats-row">
+      <div class="host-stat-block">
+        <!-- TODO: count down from 10:00 via JS (mirrors hunt timer on player screens) -->
+        <div class="host-stat-number" id="host-hunt-timer">10:00</div>
+        <div class="host-stat-label">Time Left</div>
+      </div>
+      <div class="host-stat-block">
+        <!-- TODO: updated via socket whenever a rabbit is caught -->
+        <div class="host-stat-number" id="host-rabbits-left">—</div>
+        <div class="host-stat-label">Rabbits Left</div>
+      </div>
+    </div>
+
+    <!-- Live player list with role + caught status -->
+    <h3 style="margin-bottom:8px;">Players</h3>
+    <div class="host-player-list" id="host-game-list">
+      <!-- Populated dynamically — one .host-player-row per player.
+      Example structure:
+      <div class="host-player-row">
+        <span>Player Name</span>
+        <span class="role-fox">Fox</span>
+      </div>
+      <div class="host-player-row">
+        <span>Player Name</span>
+        <span class="role-rabbit">Rabbit</span>
+        <span class="caught-tag">Caught</span>
+      </div>
+      -->
+    </div>
+
+    <!-- Emergency reset — ends the game early if something goes wrong -->
+    <!-- TODO: emit 'endGame' to server; ask for confirmation before firing -->
+    <button class="btn" id="btn-end-game-early" style="margin-top:20px; border-color: var(--light-blue);">
+      End Game Early
+    </button>
+
+  </div>
+
+
+  <!-- ── HOST ENDED VIEW ───────────────────────────────────
+       Shown when hunt timer runs out or all rabbits are caught. -->
+  <div id="view-host-ended" class="view hidden">
+
+    <!-- TODO: set based on win condition -->
+    <div class="winner-text" id="host-winner-text"></div>
+
+    <p id="host-ended-summary" style="margin-top:12px;"></p>
+
+    <div class="host-player-list" id="host-ended-list" style="margin-top:16px;">
+      <!-- Final player list with caught/survived status -->
+    </div>
+
+    <!-- TODO: emit 'resetGame' to server; returns all clients to lobby -->
+    <button class="btn" id="btn-reset-game">Reset to Lobby</button>
+
+  </div>
+
+
+  <script src="host.js"></script>
+
+</body>
+</html>

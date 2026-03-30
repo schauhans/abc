@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+  <link rel="manifest" href="manifest.json" />
+  <title>Foxes & Rabbits</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- p5.js and Mappa (copy from gps-just-map/public/lib/) -->
+  <script src="lib/p5.js"></script>
+  <script src="lib/mappa.js"></script>
+
+  <!-- Socket.io client — served automatically by the Socket.io server -->
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+  <!--
+    VIEW SYSTEM — only one view is visible at a time.
+    JS switches views by toggling the "hidden" class.
+    Order: join → lobby → reveal → headstart → game → ended
+  -->
+
+
+  <!-- ── JOIN VIEW ──────────────────────────────────────────
+       First screen. Player enters their name and confirms
+       they are physically at the meeting point before joining. -->
+  <div id="view-join" class="view">
+
+    <h1>Foxes and<br>Rabbits</h1>
+
+    <!-- TODO: bind to socket 'joinGame' event on submit -->
+    <input type="text" id="input-name" placeholder="Your name..." maxlength="20" />
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="check-location" />
+      <label for="check-location">I confirm I am at the meeting point</label>
+    </div>
+
+    <!-- Disabled until name is filled and checkbox is checked (enforced in sketch.js) -->
+    <button class="btn" id="btn-join" disabled>Join Game</button>
+
+  </div>
+
+
+  <!-- ── LOBBY VIEW ─────────────────────────────────────────
+       Waiting room. Updates live via socket as players join.
+       Host starts the game from the separate /host page. -->
+  <div id="view-lobby" class="view hidden">
+
+    <h1>Foxes and Rabbits</h1>
+    <p class="accent-text">Waiting for more players....</p>
+
+    <!-- GPS status — updated by handleNewPosition() once a fix arrives -->
+    <p id="lobby-gps-status" class="small-accent">Locating GPS...</p>
+
+    <!-- Updated via socket 'lobbyUpdate' event -->
+    <p class="player-count-text" id="lobby-player-count">0 players...</p>
+
+    <div class="lobby-player-list" id="lobby-player-list">
+      <!-- Populated dynamically — one .lobby-player-item per joined player -->
+    </div>
+
+  </div>
+
+
+  <!-- ── ROLE REVEAL VIEW ───────────────────────────────────
+       Server assigns roles and emits 'rolesAssigned'.
+       Each player sees their own role + the full player/role
+       list so everyone can identify each other in person.
+       The 3-minute headstart countdown begins immediately.
+       Foxes wait; rabbits are told to run. -->
+  <div id="view-reveal" class="view hidden">
+
+    <h1>Foxes and Rabbits</h1>
+
+    <!-- Headstart countdown (3:00 → 0:00) -->
+    <!-- TODO: count down via JS; on 0 emit 'readyForHunt', transition to view-game -->
+    <div class="timer-box" id="reveal-timer">3:00</div>
+
+    <p class="role-intro">You are a</p>
+    <!-- TODO: set text + color class via JS based on assigned role -->
+    <h2 id="role-title">Fox!</h2>
+
+    <!-- Role-specific instructions -->
+    <!-- TODO: swap text based on role -->
+    <p id="role-description">Wait until the timer is up to go &amp; catch the bunnies!</p>
+
+    <!-- Rabbit password — only shown if role === 'rabbit' -->
+    <div id="rabbit-password-section" class="hidden">
+      <div class="password-box">
+        <p>Your secret password:</p>
+        <!-- TODO: populated from server 'rolesAssigned' payload -->
+        <div class="password-code" id="player-password">ABC123XYZ</div>
+      </div>
+      <p style="max-width:280px;">Show this to a fox <strong>only</strong> if they catch you!</p>
+    </div>
+
+    <!-- All players + their roles — visible to everyone during reveal -->
+    <div class="player-role-list" id="reveal-player-list">
+      <!-- Populated dynamically — one .player-role-item per player -->
+      <!-- Example structure (removed by JS before populating):
+      <div class="player-role-item">
+        <span>Player Name</span>
+        <span class="role-tag-fox">Fox</span>
+      </div>
+      -->
+    </div>
+
+  </div>
+
+
+  <!-- ── HEADSTART VIEW ────────────────────────────────────
+       Shown only after the reveal countdown finishes, if we
+       want a dedicated "GO!" screen before the map opens.
+       Can be skipped — transition straight to view-game instead. -->
+  <div id="view-headstart" class="view hidden">
+
+    <h1>Foxes and Rabbits</h1>
+
+    <!-- Large hunt countdown — counts down from 10:00 once hunt begins -->
+    <div class="timer-box" id="headstart-big-timer">0:00</div>
+
+    <!-- TODO: show role-specific message -->
+    <h2 id="headstart-role-msg"></h2>
+    <p  id="headstart-role-sub"></p>
+
+  </div>
+
+
+  <!-- ── ACTIVE GAME VIEW ───────────────────────────────────
+       Main game screen. Tab bar switches between GPS map
+       (rendered by p5/Mappa) and the Players list. -->
+  <div id="view-game" class="view hidden">
+
+    <!-- Header: title + hunt countdown timer -->
+    <div class="game-header">
+      <h1>Foxes &amp; Rabbits</h1>
+      <!-- TODO: count down from 10:00; on 0 emit 'huntEnded' / transition to view-ended -->
+      <div class="timer-box" id="hunt-timer">10:00</div>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-btn-gps"     onclick="switchTab('gps')">GPS</button>
+      <button class="tab-btn"        id="tab-btn-players" onclick="switchTab('players')">Players</button>
+    </div>
+
+    <!-- Tab content area -->
+    <div class="tab-content">
+
+      <!-- ── GPS TAB ──────────────────────────────────────
+           Two-part layout: map on top, action bar below.
+           Buttons live OUTSIDE the canvas so taps always work. -->
+      <div id="tab-gps" class="tab-panel active">
+
+        <!-- Map area — p5 canvas + Leaflet tiles fill this div -->
+        <div id="p5-canvas-container">
+          <!-- GPS enable button floats top-right over the map -->
+          <button id="btn-request-gps" onclick="requestGPS()">Enable GPS</button>
+          <!-- Carrot freeze banner floats at the top of the map (fox only) -->
+          <div id="banner-carrot-active" class="hidden">
+            ⚠ A carrot was picked up — all foxes are frozen!
+          </div>
+        </div>
+
+        <!-- Action bar — sits BELOW the map, outside the canvas entirely -->
+        <div id="game-action-bar">
+
+          <!-- Fox controls -->
+          <div id="fox-controls" class="action-row hidden">
+            <button class="btn-game" id="btn-place-trap">Place Trap Here</button>
+            <button class="btn-game" id="btn-catch-rabbit" disabled>Catch Rabbit</button>
+          </div>
+
+          <!-- Rabbit controls -->
+          <div id="rabbit-controls" class="action-row hidden">
+            <button class="btn-game hidden" id="btn-pickup-carrot">Pick Up Carrot</button>
+            <button class="btn-game" id="btn-show-password">Show My Password</button>
+          </div>
+
+          <!-- Rabbits left (fox only, shown alongside fox controls) -->
+          <div id="rabbits-left-bar" class="hidden">
+            Rabbits left: <span id="rabbits-left-count">—</span>
+          </div>
+
+        </div><!-- /game-action-bar -->
+
+      </div><!-- /tab-gps -->
+
+
+      <!-- ── PLAYERS TAB ───────────────────────────────────
+           Shows a card grid of players (fox sees foxes;
+           rabbit sees rabbits) with eliminated status. -->
+      <div id="tab-players" class="tab-panel">
+        <div class="players-panel">
+          <div class="players-grid" id="players-grid">
+            <!-- Populated dynamically — one .player-card per visible player.
+            Example structure:
+            <div class="player-card">
+              <div class="player-avatar"></div>
+              <div class="player-card-name">Name: Alex</div>
+              <div class="player-card-status">
+                Eliminated?: <span>N</span>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div><!-- /tab-players -->
+
+    </div><!-- /tab-content -->
+
+  </div><!-- /view-game -->
+
+
+  <!-- ── GAME ENDED VIEW ────────────────────────────────────
+       Shown when hunt timer runs out or all rabbits are caught. -->
+  <div id="view-ended" class="view hidden">
+
+    <!-- TODO: set "FOXES WIN!" or "RABBITS WIN!" based on result -->
+    <div class="winner-text" id="winner-text"></div>
+
+    <p id="ended-summary-line"></p>
+
+    <div class="summary-list" id="ended-summary-list">
+      <!-- Populated dynamically — one row per player showing caught/survived -->
+    </div>
+
+    <!-- TODO: resets server state back to lobby -->
+    <button class="btn" id="btn-play-again">Play Again</button>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════
+    OVERLAYS — float above all views
+  ════════════════════════════════════════════════════════ -->
+
+
+  <!-- Catch overlay — fox: enter password to confirm catch -->
+  <div id="overlay-catch" class="overlay hidden">
+    <h2>You caught a rabbit!</h2>
+    <p style="margin-top:12px;">Ask the rabbit for their password so your catch counts.</p>
+    <!-- TODO: validate against server on submit -->
+    <input type="password" id="input-catch-password" placeholder="Password..." />
+    <p class="note">If you didn't actually catch a rabbit, this just means one is nearby!</p>
+    <button class="btn" id="btn-submit-catch">Submit</button>
+    <button class="btn" id="btn-cancel-catch" style="margin-top:8px;">Cancel</button>
+  </div>
+
+
+  <!-- Caught overlay — rabbit: show password to the fox -->
+  <div id="overlay-caught" class="overlay hidden">
+    <h2>You have been caught!</h2>
+    <p id="caught-note" style="margin-top:12px; max-width:280px;">
+      If a fox has caught you, show them this password:
+    </p>
+    <!-- Populated from the player's own password (received at role reveal) -->
+    <div class="password-box" style="margin-top:16px;">
+      <div class="password-code" id="caught-password-display">ABC123XYZ</div>
+    </div>
+    <p style="margin-top:12px; font-style:italic; color:var(--light-blue);">
+      If not, a fox is near! Run!
+    </p>
+    <button class="btn" id="btn-dismiss-caught">Dismiss</button>
+  </div>
+
+
+  <!-- Freeze overlay — rabbit stepped on a trap -->
+  <div id="overlay-freeze" class="overlay hidden">
+    <h2>FREEZE!</h2>
+    <p>You stepped on a trap — don't move!</p>
+    <!-- TODO: count down from 10 then hide overlay -->
+    <div class="timer-box" id="freeze-countdown">10</div>
+  </div>
+
+
+  <!-- All-players-visible flash — shown for 5 sec at 2/4/6/8/9 min marks -->
+  <div id="overlay-all-visible" class="overlay hidden">
+    <h3>ALL PLAYERS VISIBLE</h3>
+    <!-- Map is still rendering underneath; this is just the label flash -->
+  </div>
+
+
+  <!-- Scripts — requestGPS must load before sketch.js -->
+  <script src="requestGPS.js"></script>
+  <script src="sketch.js"></script>
+
+</body>
+</html>

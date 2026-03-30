@@ -10,7 +10,6 @@ function requestGPS() {
     if (result.state === "granted") {
       report(result.state);
       GPS_GRANTED = true;
-      //need to add a part to actually get the position and update it when it changes
       navigator.geolocation.watchPosition(handleNewPosition, function(error){
         console.log("ERRROR GPS:", error)
       }, GPS_options);

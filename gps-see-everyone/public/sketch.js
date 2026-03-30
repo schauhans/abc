@@ -6,6 +6,8 @@ let currentLatitude = 0; // global variables will be updated as we get GPS data
 let mapInit = false; // we only do map stuff once mapInit is true (see in draw)
 let me; // point object showing our own location
 
+let socket; // for socket io connection to server
+let others = {}; // to keep track of other people's locations
 
 // options for map
 // we only actually initialize the map once we get gps data (in draw)
@@ -24,6 +26,35 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("p5-canvas-container");
   me = new MyPoint();
+  
+  socket = io(); // connect to socket io server
+
+  // snapshot of everyone already connected when we first join
+  socket.on('existingPositions', (data) => {
+    for (let id in data) {
+      if (!others[id]) {
+        others[id] = new MyPoint();
+        others[id].col = color(100, 150, 255);
+      }
+      others[id].lat = data[id].lat;
+      others[id].lng = data[id].lng;
+    }
+  });
+
+  socket.on('otherPosition', (data) => {
+    if (!others[data.id]) {
+      others[data.id] = new MyPoint();
+      others[data.id].col = color(100, 150, 255); // blue for others
+    }
+    others[data.id].lat = data.lat;
+    others[data.id].lng = data.lng;
+    if (mapInit) {
+      let pos = myMap.latLngToPixel(data.lat, data.lng);
+      others[data.id].goalX = pos.x;
+      others[data.id].goalY = pos.y;
+    }
+  });
+
   
 }
 
@@ -46,6 +77,11 @@ function draw() {
     me.update();
     me.display();
     // console.log(me)
+      // added this to draw other people's locations as well
+    for (let id in others) {
+      others[id].update();
+      others[id].display();
+    }
 
   }
   
@@ -53,7 +89,7 @@ function draw() {
 
 // P5 touch events: https://p5js.org/reference/#Touch
 function touchStarted() {
-  if(mapInit){ //make sure map alr initialized
+  if(mapInit){
     // the touches array registers which pixel of the canvas we touch
     // using the pixelToLatLng function, we can translate from pixel
     // to coordination system
@@ -71,13 +107,15 @@ function handleNewPosition(pos){
   console.log("NEW LOC", pos);
 
   console.log("accuracy:", pos.coords.accuracy, "meters");
-  me.accuracy = pos.coords.accuracy;
+  // me.accuracy = pos.coords.accuracy;
   
   // fix location for chinese map tiles (function in requestGPS.js)
   let lonlat = fixForChineseMap(pos);
   currentLongitude = lonlat[0];
   currentLatitude = lonlat[1];
   console.log(currentLatitude, currentLongitude);
+
+  socket.emit("myPosition", { lat: currentLatitude, lng: currentLongitude });
 
   if(mapInit){
     // if map already displayed, update the point
@@ -93,6 +131,14 @@ function updateMapContent(){
   let myPosOnCanvas = myMap.latLngToPixel(currentLatitude, currentLongitude)
   me.goalX = myPosOnCanvas.x;
   me.goalY = myPosOnCanvas.y;
+
+  for (let id in others) {
+    if (others[id].lat && others[id].lng) {
+      let pos = myMap.latLngToPixel(others[id].lat, others[id].lng);
+      others[id].goalX = pos.x;
+      others[id].goalY = pos.y;
+    }
+  }
 }
 
 function metersToPixel(meters, lat){
