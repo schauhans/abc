@@ -20,7 +20,12 @@ let currentLongitude = 0;
 // Initialise socket at module load so the join-button click handler can call
 // socket.emit() before p5 setup() has run. Guard with typeof in case
 // socket.io.js hasn't loaded (keeps the button enable/disable logic working).
-let socket = typeof io === 'function' ? io() : null;
+let socket;
+if (location.hostname.toLowerCase().startsWith('browsercircus') || location.hostname.toLowerCase().startsWith('www')){
+    socket = io({path: "/sanjana/port-4220/socket.io"});  
+} else{
+    socket = io(); 
+}
 let myRole     = null;   // 'fox' | 'rabbit'
 let myPassword = null;   // rabbit's unique catch-password (from server)
 let myName     = '';
