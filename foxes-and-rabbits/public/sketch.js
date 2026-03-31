@@ -217,11 +217,20 @@ function setup() {
     // server sends this back every time we emit 'myPosition'
 
     socket.on('positionUpdate', (data) => {
-        console.log('[positionUpdate] players:', Object.keys(data.visiblePlayers || {}).length,
+        const playerKeys = Object.keys(data.visiblePlayers || {});
+        console.log('[positionUpdate] players:', playerKeys.length,
                     '| traps:', (data.visibleTraps || []).length,
                     '| carrots:', (data.visibleCarrots || []).length,
                     '| rabbits:', (data.rabbits || []).length,
                     '| rabbitNearby:', data.rabbitNearby);
+        if (playerKeys.length > 0) {
+            playerKeys.forEach(id => {
+                const p = data.visiblePlayers[id];
+                console.log('[positionUpdate] player', p.name, '→ lat:', p.lat, 'lng:', p.lng);
+            });
+        } else {
+            console.log('[positionUpdate] no visible players — either no teammates or they have no GPS fix yet');
+        }
         visiblePlayers = data.visiblePlayers || {};
         visibleTraps   = data.visibleTraps   || [];
         visibleCarrots = data.visibleCarrots || [];
@@ -561,9 +570,18 @@ function draw() {
     const drawPlayers = allVisibleActive ? allVisiblePlayers : visiblePlayers;
 
     // ── draw teammate / all-visible dots ──────────────────
+    const playerIds = Object.keys(drawPlayers);
+    if (frameCount % 60 === 0) {  // log once per second (30fps × 2)
+        console.log('[draw] visible players to draw:', playerIds.length,
+                    '| my GPS:', currentLatitude, currentLongitude);
+    }
     for (const id in drawPlayers) {
         const p   = drawPlayers[id];
         const pos = myMap.latLngToPixel(p.lat, p.lng);
+        if (frameCount % 60 === 0) {
+            console.log('[draw] drawing dot for', p.name, 'at lat:', p.lat, 'lng:', p.lng,
+                        '→ pixel x:', Math.round(pos.x), 'y:', Math.round(pos.y));
+        }
 
         // initialise lerp state on first sight of this player
         if (!playerPixels[id]) {
@@ -596,6 +614,10 @@ function draw() {
     }
 
     // ── draw self ─────────────────────────────────────────
+    if (frameCount % 60 === 0) {
+        console.log('[draw] my GPS for self-dot:', currentLatitude, currentLongitude,
+                    currentLatitude ? '✅ has fix' : '❌ no fix yet');
+    }
     if (currentLatitude && currentLongitude) {
         const myPos = myMap.latLngToPixel(currentLatitude, currentLongitude);
         myGoalX = myPos.x;
@@ -721,6 +743,7 @@ function handleNewPosition(pos) {
     }
 
     if (socket && socket.connected) {
+        console.log('[GPS] emitting myPosition to server:', currentLatitude, currentLongitude);
         socket.emit('myPosition', { lat: currentLatitude, lng: currentLongitude });
     } else {
         console.warn('[GPS] socket not connected, skipping emit');
