@@ -64,12 +64,18 @@ let myMap;
 let canvas;
 let mapInit = false;
 
-const mappa_options = {
-    lat:   MAP_CENTER_LAT,
-    lng:   MAP_CENTER_LNG,
-    zoom:  MAP_ZOOM,
-    style: 'https://webst01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}',
-};
+// mappa_options is built at map-init time so it can use the live GPS position.
+// Defined here as a function rather than a const object.
+function buildMappaOptions() {
+    const lat = currentLatitude  || MAP_CENTER_LAT;
+    const lng = currentLongitude || MAP_CENTER_LNG;
+    return {
+        lat,
+        lng,
+        zoom:  MAP_ZOOM,
+        style: 'https://webst01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}',
+    };
+}
 
 // My own dot position (lerped, same pattern as class examples)
 let myX = -999, myY = -999, myGoalX = -999, myGoalY = -999;
@@ -520,7 +526,7 @@ function draw() {
             // won't be set until its <script> tag fires onload. We check each frame
             // until it's ready rather than crashing on the first frame.
             if (!myMap) {
-                myMap = mappa.tileMap(mappa_options);
+                myMap = mappa.tileMap(buildMappaOptions());
                 myMap.overlay(canvas);
                 myMap.onChange(updateMapContent);
                 console.log('[map init] mappa setup started, waiting for Leaflet to load...');
@@ -536,16 +542,6 @@ function draw() {
 
             mapInit = true;
             console.log('[map init] Leaflet ready — map fully initialized');
-
-            L.dragging.disable();
-            L.touchZoom.disable();
-            L.doubleClickZoom.disable();
-            L.scrollWheelZoom.disable();
-            L.boxZoom.disable();
-            L.keyboard.disable();
-            if (L.tap)                L.tap.disable();
-            if (L.zoomControl)        L.zoomControl.remove();
-            if (L.attributionControl) L.attributionControl.remove();
 
             const lc = L.getContainer();
             console.log('[map init] Leaflet container:', lc.offsetWidth, 'x', lc.offsetHeight);
