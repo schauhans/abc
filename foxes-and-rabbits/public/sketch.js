@@ -516,13 +516,27 @@ function draw() {
         console.log('[map init] canvas resized to', cw, 'x', ch);
 
         try {
-            myMap = mappa.tileMap(mappa_options);
-            myMap.overlay(canvas);
-            myMap.onChange(updateMapContent);
-            mapInit = true;
-            console.log('[map init] mappa.tileMap + overlay OK');
+            // Only call tileMap/overlay once — Leaflet loads async so myMap.map
+            // won't be set until its <script> tag fires onload. We check each frame
+            // until it's ready rather than crashing on the first frame.
+            if (!myMap) {
+                myMap = mappa.tileMap(mappa_options);
+                myMap.overlay(canvas);
+                myMap.onChange(updateMapContent);
+                console.log('[map init] mappa setup started, waiting for Leaflet to load...');
+                return;
+            }
 
             const L = myMap.map;
+            if (!L) {
+                // Leaflet script hasn't finished loading yet — try next frame
+                console.log('[map init] Leaflet not ready yet, retrying...');
+                return;
+            }
+
+            mapInit = true;
+            console.log('[map init] Leaflet ready — map fully initialized');
+
             L.dragging.disable();
             L.touchZoom.disable();
             L.doubleClickZoom.disable();
@@ -535,7 +549,7 @@ function draw() {
 
             const lc = L.getContainer();
             console.log('[map init] Leaflet container:', lc.offsetWidth, 'x', lc.offsetHeight);
-            showToast('Map OK ✓  leaflet ' + lc.offsetWidth + 'x' + lc.offsetHeight);
+            showToast('Map OK ✓');
         } catch (err) {
             console.error('[map init] ERROR:', err);
             showToast('Map ERROR: ' + err.message);
