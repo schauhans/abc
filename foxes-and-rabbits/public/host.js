@@ -4,12 +4,36 @@
 //  starts the game, and monitors live status during the hunt.
 // ============================================================
 
-const socket = io();
+console.log('[host.js] Script started.');
+console.log('[host.js] hostname:', location.hostname);
+console.log('[host.js] typeof io:', typeof io);
+
+let socket;
 if (location.hostname.toLowerCase().startsWith('browsercircus') || location.hostname.toLowerCase().startsWith('www')){
-    socket = io({path: "/sanjana/port-4220/socket.io"});  
-} else{
-    socket = io(); 
+    console.log('[host.js] SERVER branch — connecting with path /sanjana/port-4220/socket.io');
+    socket = io({path: "/sanjana/port-4220/socket.io"});
+} else {
+    console.log('[host.js] LOCAL branch — connecting with default io()');
+    socket = io();
 }
+console.log('[host.js] socket object created:', socket);
+
+// ── SOCKET CONNECTION EVENTS ──────────────────────────────────
+socket.on('connect', () => {
+    console.log('[host.js] ✅ CONNECTED to server. socket.id:', socket.id);
+});
+socket.on('disconnect', (reason) => {
+    console.warn('[host.js] ❌ DISCONNECTED. reason:', reason);
+});
+socket.on('connect_error', (err) => {
+    console.error('[host.js] ❌ CONNECT ERROR:', err.message, err);
+});
+socket.on('reconnect_attempt', (n) => {
+    console.log('[host.js] reconnect attempt #' + n);
+});
+socket.on('reconnect', (n) => {
+    console.log('[host.js] ✅ RECONNECTED after', n, 'attempts. socket.id:', socket.id);
+});
 
 let huntEndTime  = 0;
 let huntTimerInterval = null;
@@ -39,6 +63,7 @@ function msToTimer(ms) {
 // ── lobby ────────────────────────────────────────────────────
 
 socket.on('lobbyUpdate', ({ players, canStart }) => {
+    console.log('[host.js] 📋 lobbyUpdate received — players:', players.length, players, '| canStart:', canStart);
     const countEl    = document.getElementById('host-player-count');
     const listEl     = document.getElementById('host-lobby-list');
     const startBtn   = document.getElementById('btn-start-game');
@@ -63,7 +88,7 @@ socket.on('lobbyUpdate', ({ players, canStart }) => {
 // ── game started (roles assigned, headstart begun) ───────────
 
 socket.on('gameStarted', ({ players }) => {
-    // switch to game monitoring view
+    console.log('[host.js] 🎮 gameStarted received — players:', players);
     showHostView('view-host-game');
 
     const listEl = document.getElementById('host-game-list');
@@ -84,6 +109,7 @@ socket.on('gameStarted', ({ players }) => {
 // ── hunt begins ───────────────────────────────────────────────
 
 socket.on('huntBegin', ({ huntDurationMs }) => {
+    console.log('[host.js] 🏃 huntBegin received — huntDurationMs:', huntDurationMs);
     huntEndTime = Date.now() + huntDurationMs;
 
     // tick the host timer every second
@@ -134,6 +160,7 @@ socket.on('playerLeft', ({ name }) => {
 // ── game ended ────────────────────────────────────────────────
 
 socket.on('gameEnded', ({ winner, summary }) => {
+    console.log('[host.js] 🏁 gameEnded received — winner:', winner);
     if (huntTimerInterval) clearInterval(huntTimerInterval);
     showHostView('view-host-ended');
 
@@ -166,6 +193,7 @@ socket.on('gameEnded', ({ winner, summary }) => {
 // ── game reset ────────────────────────────────────────────────
 
 socket.on('gameReset', () => {
+    console.log('[host.js] 🔄 gameReset received');
     if (huntTimerInterval) clearInterval(huntTimerInterval);
     huntEndTime = 0;
     showHostView('view-host-lobby');
@@ -176,23 +204,31 @@ socket.on('gameReset', () => {
 //  BUTTON LISTENERS
 // ════════════════════════════════════════════════════════════
 
+console.log('[host.js] Registering button listeners...');
+
 document.getElementById('btn-start-game').addEventListener('click', () => {
+    console.log('[host.js] 🟢 btn-start-game clicked — emitting startGame');
     socket.emit('startGame');
 });
 
 document.getElementById('btn-end-game-early').addEventListener('click', () => {
+    console.log('[host.js] 🔴 btn-end-game-early clicked');
     if (confirm('End the game early? This will declare a winner immediately.')) {
+        console.log('[host.js] emitting resetGame (early end)');
         socket.emit('resetGame');
     }
 });
 
 document.getElementById('btn-reset-game').addEventListener('click', () => {
+    console.log('[host.js] 🔄 btn-reset-game clicked — emitting resetGame');
     socket.emit('resetGame');
 });
 
+console.log('[host.js] ✅ All setup complete.');
+
 
 // ════════════════════════════════════════════════════════════
-//  TOAST
+//  TOAST (added for debugging)
 // ════════════════════════════════════════════════════════════
 
 let toastTimeout;
