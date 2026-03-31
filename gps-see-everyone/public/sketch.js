@@ -154,7 +154,12 @@ function handleNewPosition(pos) {
   currentLongitude = lonlat[0];
   currentLatitude = lonlat[1];
   // console.log(currentLatitude, currentLongitude);
-  
+
+  // first valid fix: unlock Join Game button
+  if (currentLongitude !== 0 || currentLatitude !== 0) {
+    onGPSFix();
+  }
+
   me.lon = currentLongitude;
   me.lat = currentLatitude;
 

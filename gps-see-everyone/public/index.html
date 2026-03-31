@@ -22,7 +22,11 @@
 </head>
 
 <body>
-  <button id="requestOrientationButton" onclick="requestGPS()" style="position:fixed;top:20px;left:20px;">request GPS</button>
+  <div id="gps-ui" style="position:fixed;top:20px;left:20px;display:flex;flex-direction:column;gap:8px;z-index:999;">
+    <button id="enableLocationBtn" onclick="requestGPS()">Enable Location</button>
+    <button id="joinGameBtn" disabled>Join Game</button>
+    <span id="gpsStatusText" style="font-size:13px;color:#fff;text-shadow:0 0 4px #000;"></span>
+  </div>
 
   <div class="main-wrapper">
     <!-- <h1>Project Title</h1> -->

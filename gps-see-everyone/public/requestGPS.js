@@ -6,26 +6,47 @@ let GPS_options = {
   };
 
 function requestGPS() {
+  let btn = document.getElementById("enableLocationBtn");
+  let statusText = document.getElementById("gpsStatusText");
+  if (btn) btn.disabled = true;
+  if (statusText) statusText.textContent = "Getting location…";
+
+  function gpsError(error) {
+    console.log("ERRROR GPS:", error);
+    if (statusText) statusText.textContent = "GPS failed — tap Retry";
+    if (btn) btn.disabled = false;
+    if (btn) btn.textContent = "Retry Location";
+  }
+
   navigator.permissions.query({ name: "geolocation" }).then((result) => {
     if (result.state === "granted") {
       report(result.state);
       GPS_GRANTED = true;
+      navigator.geolocation.watchPosition(handleNewPosition, gpsError, GPS_options);
     } else if (result.state === "prompt") {
       report(result.state);
       GPS_GRANTED = true;
-      navigator.geolocation.watchPosition(handleNewPosition, function(error){
-        console.log("ERRROR GPS:", error)
-      }, GPS_options);
+      navigator.geolocation.watchPosition(handleNewPosition, gpsError, GPS_options);
     } else if (result.state === "denied") {
       report(result.state);
+      if (statusText) statusText.textContent = "Location denied — enable in browser settings";
+      if (btn) btn.disabled = false;
     }
     result.addEventListener("change", () => {
       report(result.state);
-      navigator.geolocation.watchPosition(handleNewPosition, function(error){
-        console.log("ERRROR GPS:", error)
-      }, GPS_options);
+      navigator.geolocation.watchPosition(handleNewPosition, gpsError, GPS_options);
     });
   });
+}
+
+// Called by handleNewPosition (in sketch.js) on first valid fix
+function onGPSFix() {
+  let btn = document.getElementById("enableLocationBtn");
+  let joinBtn = document.getElementById("joinGameBtn");
+  let statusText = document.getElementById("gpsStatusText");
+  if (btn) btn.disabled = true;
+  if (joinBtn) joinBtn.disabled = false;
+  if (statusText) statusText.textContent = "Location ready";
 }
 
 function report(state) {
