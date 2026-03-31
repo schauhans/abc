@@ -8,7 +8,7 @@ let GPS_GRANTED = false;
 let GPS_options = {
     enableHighAccuracy: true,
     timeout: 10000,
-    maximumAge: 5000,
+    maximumAge: 10000,
 };
 
 function requestGPS() {

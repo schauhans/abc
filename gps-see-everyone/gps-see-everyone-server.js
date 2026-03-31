@@ -24,26 +24,45 @@ let HTTPSserver = https.createServer(options, app)
 const { Server } = require('socket.io'); // include library
 const io = new Server(HTTPSserver); // start socket io 
 
-let positions = {}; // map of socket.id -> { lat, lng }
+let currentlyConntected = []; //list of socket IDs of copnnected clients
 
 io.on('connection', (socket) => {
 
-    console.log('a user connected', socket.id);
+    // we manage the connection inside here
+    // console.log('a user connected', socket.id);
+    // keep track of all clients connected
+    currentlyConntected.push(socket.id);
+    console.log(currentlyConntected);
+    
 
-    // send the new user everyone else's last known position
-    socket.emit('existingPositions', positions);
+    socket.on("locationFromClient", function(data){
+        // console.log("got new location", data);
+        // share the location with everybody except
+        // the sender
+        let locationInfo = {
+            lon: data.lon,
+            lat: data.lat,
+            socketID: socket.id
+        }
+        socket.broadcast.emit("locationFromServer", locationInfo);
 
-    socket.on('myPosition', function(data){
-        // store latest position
-        positions[socket.id] = { lat: data.lat, lng: data.lng };
-        // broadcast to everyone except the sender
-        socket.broadcast.emit('otherPosition', { lat: data.lat, lng: data.lng, id: socket.id });
     })
+
 
     // DISCONNECT
     socket.on("disconnect", function(){
         console.log("someone disconnected", socket.id)
-        delete positions[socket.id];
+
+        // delete socket ID from the global array
+        // that keeps track of all connected clients 
+
+        let idx = currentlyConntected.indexOf(socket.id);
+        if(idx > -1){
+            socket.broadcast.emit("deletePerson", {socketID: socket.id});
+
+            currentlyConntected.splice(idx, 1);
+            console.log(currentlyConntected);
+        }
     })
 
 })

@@ -63,6 +63,7 @@ let mappa = new Mappa('Leaflet');
 let myMap;
 let canvas;
 let mapInit = false;
+let mapCentered = false; // true once Leaflet has been panned to a real GPS fix
 
 // mappa_options is built at map-init time so it can use the live GPS position.
 // Defined here as a function rather than a const object.
@@ -740,6 +741,14 @@ function handleNewPosition(pos) {
     handleNewPosition._callCount = (handleNewPosition._callCount || 0) + 1;
     if (handleNewPosition._callCount === 1 || handleNewPosition._callCount % 5 === 0) {
         showToast('GPS #' + handleNewPosition._callCount + '  acc:' + acc + 'm  mapInit:' + mapInit);
+    }
+
+    // If the map was already initialized using fallback (Shanghai) coords,
+    // re-center it to the real GPS fix now — same pattern as gps-see-everyone.
+    if (mapInit && !mapCentered && myMap && myMap.map) {
+        myMap.map.setView([currentLatitude, currentLongitude], MAP_ZOOM);
+        mapCentered = true;
+        console.log('[GPS] re-centered map to real GPS fix:', currentLatitude, currentLongitude);
     }
 
     if (socket && socket.connected) {

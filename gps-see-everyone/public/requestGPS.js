@@ -10,9 +10,6 @@ function requestGPS() {
     if (result.state === "granted") {
       report(result.state);
       GPS_GRANTED = true;
-      navigator.geolocation.watchPosition(handleNewPosition, function(error){
-        console.log("ERRROR GPS:", error)
-      }, GPS_options);
     } else if (result.state === "prompt") {
       report(result.state);
       GPS_GRANTED = true;
