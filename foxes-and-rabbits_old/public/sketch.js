@@ -72,7 +72,13 @@ function setup() {
 
     console.log('[setup] canvas created:', canvas.width, 'x', canvas.height);
     console.log('[setup] connecting socket...');
-    socket = io();
+    
+    if (location.hostname.toLowerCase().startsWith('browsercircus') || location.hostname.toLowerCase().startsWith('www')){
+        socket = io({path: "/sanjana/port-4220/socket.io"});  
+    } else{
+     socket = io();
+    } 
+
 
     socket.on('connect', () => {
         console.log('[socket] connected, id:', socket.id);

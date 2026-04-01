@@ -4,7 +4,7 @@ const fs      = require('fs');
 const { Server } = require('socket.io');
 
 const app       = express();
-const portHTTPS = 3000;
+const portHTTPS = 4220;
 
 app.use(express.json());
 app.use(express.static('public'));

@@ -4,7 +4,12 @@
 //  starts the game, and monitors live status during the hunt.
 // ============================================================
 
-const socket = io();
+let socket;
+if (location.hostname.toLowerCase().startsWith('browsercircus') || location.hostname.toLowerCase().startsWith('www')){
+    socket = io({path: "/sanjana/port-4220/socket.io"});  
+} else{
+    socket = io(); 
+}
 
 let huntEndTime  = 0;
 let huntTimerInterval = null;
