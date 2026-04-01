@@ -1,0 +1,701 @@
+/* ============================================================
+   FOXES AND RABBITS — style.css
+   Palette:
+     --yellow:     #F5EB7F  (background)
+     --dark-blue:  #5B5D75  (main text, outlines)
+     --light-blue: #8088F5  (accent/role text)
+     --orange:     #F5CE7F  (button borders, small accents)
+   Fonts: Lilita One (headings) · Faustina (body)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Faustina:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+    --yellow:     #F5EB7F;
+    --dark-blue:  #5B5D75;
+    --light-blue: #8088F5;
+    --orange:     #F5CE7F;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Faustina', serif;
+    background: var(--yellow);
+    color: var(--dark-blue);
+    width: 100vw;
+    height: 100vh;
+    /* stretch body into the notch / home-indicator area */
+    height: 100dvh;
+    overflow: hidden;
+}
+
+
+/* ── VIEW SYSTEM ─────────────────────────────────────────── */
+
+.view {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--yellow);
+    /* push content below the notch and above the home indicator */
+    padding: calc(40px + env(safe-area-inset-top)) 28px
+             calc(32px + env(safe-area-inset-bottom)) 28px;
+    overflow-y: auto;
+}
+
+.hidden { display: none !important; }
+
+
+/* ── TYPOGRAPHY ──────────────────────────────────────────── */
+
+h1 {
+    font-family: 'Lilita One', cursive;
+    font-size: 2.6rem;
+    color: var(--dark-blue);
+    text-align: center;
+    line-height: 1.1;
+}
+
+h2 {
+    font-family: 'Lilita One', cursive;
+    font-size: 2.2rem;
+    color: var(--light-blue);
+    text-align: center;
+}
+
+h3 {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.4rem;
+    color: var(--dark-blue);
+    text-align: center;
+}
+
+p {
+    font-family: 'Faustina', serif;
+    font-size: 1.05rem;
+    color: var(--dark-blue);
+    text-align: center;
+    line-height: 1.5;
+}
+
+.accent-text {
+    font-family: 'Faustina', serif;
+    font-style: italic;
+    color: var(--light-blue);
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.small-accent {
+    font-family: 'Faustina', serif;
+    color: var(--orange);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+
+.btn {
+    font-family: 'Faustina', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    background: transparent;
+    border: 2.5px solid var(--orange);
+    border-radius: 14px;
+    padding: 13px 32px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 14px;
+    transition: background 0.15s;
+    letter-spacing: 0.3px;
+}
+
+.btn:hover  { background: rgba(245, 206, 127, 0.45); }
+.btn:active { background: rgba(245, 206, 127, 0.7); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+
+/* ── TIMER BOX ───────────────────────────────────────────── */
+
+.timer-box {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.5rem;
+    color: var(--dark-blue);
+    border: 2.5px solid var(--dark-blue);
+    border-radius: 10px;
+    padding: 5px 22px;
+    letter-spacing: 3px;
+    margin: 10px 0;
+}
+
+
+/* ── TEXT INPUT ──────────────────────────────────────────── */
+
+input[type="text"],
+input[type="password"] {
+    font-family: 'Faustina', serif;
+    font-size: 1.1rem;
+    color: var(--dark-blue);
+    background: transparent;
+    border: none;
+    border-bottom: 2.5px solid var(--dark-blue);
+    padding: 8px 4px;
+    width: 100%;
+    max-width: 300px;
+    outline: none;
+    text-align: center;
+    margin: 10px 0;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: var(--light-blue);
+    opacity: 0.65;
+}
+
+
+/* ── CHECKBOX ROW ────────────────────────────────────────── */
+
+.checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 300px;
+    width: 100%;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.checkbox-row input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    accent-color: var(--light-blue);
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.checkbox-row label {
+    text-align: left;
+    font-size: 1rem;
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+
+/* ── JOIN VIEW ───────────────────────────────────────────── */
+
+#view-join {
+    justify-content: center;
+    gap: 4px;
+}
+
+#view-join h1 { margin-bottom: 28px; }
+
+
+/* ── LOBBY VIEW ──────────────────────────────────────────── */
+
+#view-lobby {
+    justify-content: flex-start;
+    padding-top: 64px;
+    gap: 6px;
+}
+
+.player-count-text {
+    font-family: 'Faustina', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin: 6px 0 16px;
+}
+
+.lobby-player-list {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    max-height: 45vh;
+}
+
+.lobby-player-item {
+    font-family: 'Faustina', serif;
+    font-size: 1rem;
+    color: var(--dark-blue);
+    padding: 9px 18px;
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    text-align: center;
+}
+
+
+/* ── ROLE REVEAL VIEW ────────────────────────────────────── */
+
+#view-reveal {
+    justify-content: center;
+    gap: 6px;
+}
+
+#view-reveal h1 { margin-bottom: 2px; }
+
+.role-intro {
+    font-family: 'Faustina', serif;
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+    margin-top: 16px;
+}
+
+/* Password box — visible to rabbits only */
+.password-box {
+    border: 2.5px solid var(--dark-blue);
+    border-radius: 14px;
+    padding: 16px 28px;
+    margin: 14px 0 6px;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+}
+
+.password-box p {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--dark-blue);
+}
+
+.password-code {
+    font-family: 'Lilita One', cursive;
+    font-size: 2.2rem;
+    color: var(--light-blue);
+    letter-spacing: 5px;
+}
+
+/* Scrollable all-player role list */
+.player-role-list {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 14px 0 4px;
+    overflow-y: auto;
+    max-height: 28vh;
+}
+
+.player-role-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border: 2px solid var(--orange);
+    border-radius: 10px;
+    font-family: 'Faustina', serif;
+    font-size: 1rem;
+    color: var(--dark-blue);
+}
+
+.player-role-item .role-tag-fox    { color: var(--orange); font-weight: 600; }
+.player-role-item .role-tag-rabbit { color: var(--light-blue); font-weight: 600; }
+
+
+/* ── HEADSTART VIEW ──────────────────────────────────────── */
+
+#view-headstart { justify-content: center; gap: 10px; }
+
+#view-headstart .timer-box { font-size: 3.5rem; padding: 12px 36px; }
+
+
+/* ── GAME VIEW ───────────────────────────────────────────── */
+
+#view-game {
+    padding: 0;
+    background: var(--yellow);
+    flex-direction: column;
+    overflow: hidden;
+    align-items: stretch; /* override .view's align-items:center so children fill full width */
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* top padding absorbs the iPhone notch/status bar */
+    padding: calc(12px + env(safe-area-inset-top)) 20px 8px;
+    background: var(--yellow);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.game-header h1 {
+    font-size: 1.45rem;
+    margin: 0;
+    text-align: left;
+}
+
+.tab-bar {
+    display: flex;
+    border-bottom: 2.5px solid var(--dark-blue);
+    flex-shrink: 0;
+}
+
+.tab-btn {
+    flex: 1;
+    font-family: 'Faustina', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    background: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2.5px;
+    letter-spacing: 0.3px;
+    transition: color 0.1s;
+}
+
+.tab-btn.active {
+    color: var(--light-blue);
+    border-bottom-color: var(--light-blue);
+}
+
+/* Tab panels live inside .tab-content */
+.tab-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    width: 100%; /* ensure full width so children fill correctly */
+}
+
+.tab-panel          { display: none; width: 100%; height: 100%; }
+.tab-panel.active   { display: flex; flex-direction: column; width: 100%; height: 100%; }
+
+/* p5 canvas container — flex-grows to fill whatever space the action bar doesn't take */
+#p5-canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 0; /* required: lets flex child shrink below its content height */
+    width: 100%;
+}
+
+/* Action bar — solid strip below the map, buttons always tappable */
+#game-action-bar {
+    flex-shrink: 0;
+    background: var(--yellow);
+    border-top: 2.5px solid var(--dark-blue);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+/* A row of buttons inside the action bar */
+.action-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Rabbits-left label inside the action bar */
+#rabbits-left-bar {
+    font-family: 'Faustina', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--dark-blue);
+    text-align: center;
+}
+
+
+/* GPS request button — floats top-right over map */
+#btn-request-gps {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 300;
+    font-family: 'Faustina', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    background: var(--yellow);
+    border: 2px solid var(--orange);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+
+.btn-game {
+    font-family: 'Faustina', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    background: var(--yellow);
+    border: 2.5px solid var(--orange);
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-game:hover   { background: rgba(245, 206, 127, 0.6); }
+.btn-game:disabled { opacity: 0.3; cursor: not-allowed; }
+
+
+/* ── PLAYERS TAB ─────────────────────────────────────────── */
+
+.players-panel {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    background: var(--yellow);
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.player-card {
+    border: 2.5px solid var(--orange);
+    border-radius: 14px;
+    padding: 14px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: var(--yellow);
+}
+
+.player-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2.5px solid var(--dark-blue);
+    background: rgba(128, 136, 245, 0.12);
+}
+
+.player-card-name {
+    font-family: 'Faustina', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    text-align: center;
+}
+
+.player-card-status {
+    font-family: 'Faustina', serif;
+    font-size: 0.85rem;
+    color: var(--dark-blue);
+}
+
+.player-card-status span {
+    font-weight: 600;
+    color: var(--light-blue);
+}
+
+.player-card-status span.eliminated {
+    color: var(--orange);
+}
+
+
+/* ── OVERLAYS (float above everything) ───────────────────── */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 28px;
+    background: var(--yellow);
+}
+
+/* Catch overlay — fox enters password */
+#overlay-catch p.note {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--light-blue);
+    margin-top: 10px;
+}
+
+/* Caught overlay — rabbit shows their password */
+#overlay-caught .password-code {
+    margin: 16px 0 8px;
+}
+
+/* Freeze overlay — triggered when rabbit steps on trap */
+#overlay-freeze {
+    background: rgba(128, 136, 245, 0.92);
+}
+
+#overlay-freeze h2,
+#overlay-freeze p {
+    color: var(--yellow);
+}
+
+#overlay-freeze .timer-box {
+    color: var(--yellow);
+    border-color: var(--yellow);
+    font-size: 3rem;
+    padding: 10px 32px;
+    margin-top: 16px;
+}
+
+/* All-players-visible banner — thin strip at top, map stays fully visible below */
+#overlay-all-visible {
+    /* override .overlay's inset:0 so this is top-only, not full-screen */
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    height: auto;
+    background: rgba(128, 136, 245, 0.92); /* semi-transparent blue, not yellow */
+    pointer-events: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: calc(env(safe-area-inset-top) + 8px) 16px 10px;
+}
+
+#overlay-all-visible h3 {
+    font-size: 1rem;
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Carrot power-up active banner (fox only — floats top of map) */
+#banner-carrot-active {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 400;
+    background: var(--orange);
+    padding: 8px;
+    text-align: center;
+    font-family: 'Faustina', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--dark-blue);
+    border-bottom: 2px solid var(--dark-blue);
+}
+
+
+/* ── GAME ENDED VIEW ─────────────────────────────────────── */
+
+#view-ended {
+    justify-content: center;
+    gap: 14px;
+}
+
+#view-ended .winner-text {
+    font-family: 'Lilita One', cursive;
+    font-size: 3rem;
+    color: var(--light-blue);
+    text-align: center;
+    line-height: 1.1;
+}
+
+#view-ended .summary-list {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0;
+    overflow-y: auto;
+    max-height: 35vh;
+}
+
+#view-ended .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border: 2px solid var(--orange);
+    border-radius: 10px;
+    font-family: 'Faustina', serif;
+    font-size: 1rem;
+    color: var(--dark-blue);
+}
+
+
+/* ── HOST PAGE ───────────────────────────────────────────── */
+/* host.html loads this same stylesheet */
+
+#view-host-lobby,
+#view-host-game,
+#view-host-ended {
+    justify-content: flex-start;
+    padding-top: 50px;
+    gap: 10px;
+}
+
+.host-stats-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+.host-stat-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.host-stat-number {
+    font-family: 'Lilita One', cursive;
+    font-size: 3.5rem;
+    color: var(--light-blue);
+    line-height: 1;
+}
+
+.host-stat-label {
+    font-family: 'Faustina', serif;
+    font-size: 0.9rem;
+    color: var(--dark-blue);
+}
+
+.host-player-list {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    overflow-y: auto;
+    max-height: 45vh;
+}
+
+.host-player-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 18px;
+    border: 2px solid var(--orange);
+    border-radius: 11px;
+    font-family: 'Faustina', serif;
+    font-size: 1rem;
+    color: var(--dark-blue);
+}
+
+.role-fox    { color: var(--orange);     font-weight: 600; }
+.role-rabbit { color: var(--light-blue); font-weight: 600; }
+.caught-tag  { font-size: 0.85rem; color: var(--light-blue); }
