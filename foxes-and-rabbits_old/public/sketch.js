@@ -217,19 +217,9 @@ function setup() {
                 if (btn) { btn.disabled = true; btn.textContent = 'Trap Placed ✓'; }
             }
 
-            // BUG FIX: enable Catch Rabbit only when server confirms a rabbit is in range.
-            // The button starts disabled in HTML and was never being enabled before.
+            // Catch button is always enabled for foxes — password alone confirms the catch.
             const catchBtn = document.getElementById('btn-catch-rabbit');
-            if (catchBtn /* && !carrotFrozen */) {
-                const wasDisabled = catchBtn.disabled;
-                catchBtn.disabled = !data.rabbitNearby;
-                if (wasDisabled && data.rabbitNearby) {
-                    console.log('[catch-btn] ENABLED — rabbit in range');
-                    showToast('Rabbit in range! Tap Catch Rabbit.');
-                } else if (!wasDisabled && !data.rabbitNearby) {
-                    console.log('[catch-btn] disabled — no rabbit in range');
-                }
-            }
+            if (catchBtn) catchBtn.disabled = false;
         }
 
         updateRabbitsLeftDisplay();
@@ -332,8 +322,7 @@ function setup() {
 
     socket.on('catchFailed', ({ reason }) => {
         const messages = {
-            wrongPassword: 'Wrong password — are you sure you caught a rabbit?',
-            tooFar:        'No rabbit close enough. Get closer!',
+            wrongPassword: 'Wrong password — try again.',
             // frozen:        'You are frozen! A carrot was just picked up.',
             invalid:       'That rabbit is already caught.',
         };

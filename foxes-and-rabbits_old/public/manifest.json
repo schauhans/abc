@@ -2,7 +2,7 @@
   "name": "Foxes and Rabbits",
   "icons": [
     {
-      "src": "assets/512.png",
+      "src": "assets/app-image.png",
       "type": "image/png",
       "sizes": "512x512"
     }

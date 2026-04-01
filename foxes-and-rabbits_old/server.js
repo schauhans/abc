@@ -24,8 +24,8 @@ const io = new Server(HTTPSserver);
 
 const HEADSTART_MS       = 30 * 1000;        // 30 sec (testing) — change to 3 * 60 * 1000 for real game
 const HUNT_MS            = 10 * 60 * 1000;   // 10 min hunt window
-const TRAP_RADIUS_M      = 6;                // metres — trap trigger distance
-const CATCH_RADIUS_M     = 6;                // metres — fox must be this close to catch
+const TRAP_RADIUS_M      = 12;               // metres — trap trigger distance
+const CATCH_RADIUS_M     = 12;               // metres — fox must be this close to catch
 // const CARROT_COUNT       = 4;                // carrots randomly placed per game
 // const CARROT_FREEZE_MS   = 15 * 1000;        // how long foxes freeze when carrot is picked up
 const TRAP_FREEZE_MS     = 10 * 1000;        // how long a rabbit freezes when trap triggers
@@ -191,6 +191,17 @@ function emitPositionUpdateTo(socketId) {
 function notifyAllFoxesOfRabbitMove() {
     for (const [foxId, fox] of Object.entries(players)) {
         if (fox.role === 'fox') emitPositionUpdateTo(foxId);
+    }
+}
+
+// When any player moves, push a fresh positionUpdate to all their same-role teammates
+// so teammate dots on their screens stay current even when they are standing still.
+function notifyTeammatesOnMove(socketId) {
+    const mover = players[socketId];
+    if (!mover || !mover.role) return;
+    for (const [id, p] of Object.entries(players)) {
+        if (id === socketId) continue;
+        if (p.role === mover.role) emitPositionUpdateTo(id);
     }
 }
 
@@ -391,6 +402,7 @@ io.on('connection', (socket) => {
 
         if (gamePhase === 'headstart' || gamePhase === 'active') {
             emitPositionUpdateTo(socket.id);
+            notifyTeammatesOnMove(socket.id);
         }
     });
 
@@ -478,20 +490,8 @@ io.on('connection', (socket) => {
         }
         console.log(`[catch] password matched: ${matchedRabbit.name}`);
 
-        if (fox.position && matchedRabbit.position) {
-            const dist = haversineDistance(
-                fox.position.lat, fox.position.lng,
-                matchedRabbit.position.lat, matchedRabbit.position.lng
-            );
-            console.log(`[catch] distance ${fox.name} → ${matchedRabbit.name}: ${dist.toFixed(1)}m (radius: ${CATCH_RADIUS_M}m)`);
-            if (dist > CATCH_RADIUS_M) {
-                console.log(`[catch] FAILED: too far (${dist.toFixed(1)}m)`);
-                io.to(socket.id).emit('catchFailed', { reason: 'tooFar' });
-                return;
-            }
-        } else {
-            console.log(`[catch] skipping distance check — fox pos: ${!!fox.position}, rabbit pos: ${!!matchedRabbit.position}`);
-        }
+        // Distance check removed — password alone confirms the catch.
+        // (GPS accuracy indoors/outdoors is not reliable enough to enforce proximity.)
 
         matchedRabbit.caught = true;
         io.to(socket.id).emit('catchSuccess', { rabbitName: matchedRabbit.name });
