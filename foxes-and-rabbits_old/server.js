@@ -32,12 +32,6 @@ const TRAP_FREEZE_MS     = 10 * 1000;        // how long a rabbit freezes when t
 const REVEAL_TIMES_MS    = [2, 4, 6, 8, 9].map(m => m * 60 * 1000);
 const REVEAL_DURATION_MS = 5 * 1000;
 
-// NOTE FOR TESTING INDOORS: GPS accuracy indoors is ~30-50m.
-// TRAP_RADIUS_M=6 and CATCH_RADIUS_M=6 will almost never trigger with that accuracy.
-// Temporarily increase both to 30 or 40 for indoor testing, then restore to 6 for the real game.
-
-// const MAP_HALF_SPAN = 0.0015;
-
 
 // ============================================================
 //  GAME STATE
