@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="manifest" href="manifest.json" />
+  <title>Music Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+    <div id="center-container">
+      <h1>Music Profile Quiz</h1>
+
+      <form id="quizForm">
+
+        <div class="question">
+          <label>What's your name?</label>
+          <input id="nameInput" type="text" placeholder="Your name" autocomplete="off" />
+        </div>
+
+        <div class="question">
+          <label>What type of music do you like?</label>
+          <div id="genreGrid">
+            <label class="genre-btn"><input type="checkbox" value="Rap" /><span>Rap</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Pop" /><span>Pop</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Indie" /><span>Indie</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Jazz" /><span>Jazz</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Classical" /><span>Classical</span></label>
+            <label class="genre-btn"><input type="checkbox" value="R&B" /><span>R&amp;B</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Electronic" /><span>Electronic</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Rock" /><span>Rock</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Hip-Hop" /><span>Hip-Hop</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Country" /><span>Country</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Metal" /><span>Metal</span></label>
+            <label class="genre-btn"><input type="checkbox" value="Folk" /><span>Folk</span></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>What is your favorite song?</label>
+          <div class="song-input-wrapper">
+            <input id="favSongInput" type="text" placeholder="Favorite song" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="question">
+          <label>Who are your top 3 favorite artists?</label>
+          <div class="artist-input-wrapper">
+            <input class="artistInput" type="text" placeholder="Artist 1" autocomplete="off" />
+          </div>
+          <div class="artist-input-wrapper">
+            <input class="artistInput" type="text" placeholder="Artist 2" autocomplete="off" />
+          </div>
+          <div class="artist-input-wrapper">
+            <input class="artistInput" type="text" placeholder="Artist 3" autocomplete="off" />
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn">Submit</button>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="socket.io/socket.io.js"></script>
+  <script src="quizScript.js"></script>
+</body>
+
+</html>

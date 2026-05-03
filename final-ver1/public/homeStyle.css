@@ -1,0 +1,227 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background: #000000;
+}
+
+
+.page-header {
+    text-align: center;
+    padding: 36px 20px 16px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 2em;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.page-header p {
+    margin: 0;
+    font-size: 1em;
+    color: #fffcfc;
+    opacity: 0.7;
+    white-space: pre-wrap;
+}
+
+#cardsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 24px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#emptyMsg {
+    width: 100%;
+    text-align: center;
+    opacity: 0.4;
+    font-size: 1.1em;
+    color: #ffffff;
+}
+
+/* Card — colors come from --card-bg and --card-accent set by JS */
+.user-card {
+    background: var(--card-bg, #4100F5);
+    border-radius: 22px;
+    width: 320px;
+    padding: 20px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.user-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Header row: name + button */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.card-name {
+    font-size: 28px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    line-height: 1.1;
+}
+
+.give-song-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 13px;
+    border: 2px solid var(--card-accent, #CDF564);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--card-accent, #CDF564);
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.give-song-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Sections */
+.card-section {
+    margin-bottom: 14px;
+}
+
+.card-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Labels: light italic */
+.card-label {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    margin-bottom: 6px;
+}
+
+/* Genres */
+.card-genres-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-genres-row .card-label {
+    margin-bottom: 0;
+}
+
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.genre-tag {
+    background: var(--card-accent, #CDF564);
+    color: var(--card-bg, #4100F5);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Fave Song */
+.card-song-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-song-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-song-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--card-accent, #CDF564);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-song-artist {
+    font-size: 12px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    opacity: 0.75;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-song-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+/* Top Artists */
+.artist-list {
+    margin: 4px 0 0 0;
+    padding-left: 22px;
+    color: var(--card-accent, #CDF564);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.artist-list li {
+    margin-bottom: 3px;
+}
+
+#recNotification {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #ffffff;
+    color: #000000;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 0.95em;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+}
+
+#recNotification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}

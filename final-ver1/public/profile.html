@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <title>Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="profileStyle.css">
+</head>
+
+<body>
+
+  <div class="page-header">
+    <a href="home.html" class="back-btn">← Back</a>
+    <h1 id="profileTitle">Loading...</h1>
+  </div>
+
+  <div class="profile-container">
+
+    <div id="profileCard" class="profile-card"></div>
+
+    <div class="recs-section">
+      <h2>Song Recommendations</h2>
+      <div id="recsList">
+        <p id="noRecsMsg">No recommendations yet — be the first!</p>
+      </div>
+    </div>
+
+    <div id="recFormSection" class="rec-form-section" style="display:none;">
+      <h2>Give a Song!</h2>
+      <form id="recForm">
+        <div class="form-group">
+          <label>Song recommendation</label>
+          <input type="text" id="songInput" placeholder="Song name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>By</label>
+          <input type="text" id="artistInput" placeholder="Artist's Name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Link to song</label>
+          <input type="text" id="linkInput" placeholder="https://..." autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Give a note explaining your rec!</label>
+          <textarea id="noteInput" placeholder="Why will they love it?"></textarea>
+        </div>
+        <button type="submit" id="recSubmitBtn">Give Rec!</button>
+      </form>
+      <p id="recSuccessMsg" style="display:none;">Rec sent!</p>
+    </div>
+
+  </div>
+
+  <script src="socket.io/socket.io.js"></script>
+  <script src="profileScript.js"></script>
+</body>
+
+</html>

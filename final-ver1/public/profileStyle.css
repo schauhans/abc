@@ -1,0 +1,358 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background: #000000;
+}
+
+.page-header {
+    text-align: center;
+    padding: 28px 20px 12px;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-decoration: none;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+    opacity: 0.65;
+    font-size: 0.95em;
+}
+
+.back-btn:hover {
+    opacity: 1;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Profile card — colors from --card-bg / --card-accent set by JS */
+.profile-card {
+    background: var(--card-bg, #4100F5);
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-name {
+    font-size: 32px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    margin-bottom: 18px;
+    line-height: 1.1;
+}
+
+.card-section {
+    margin-bottom: 14px;
+}
+
+.card-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Labels: light italic */
+.card-label {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    margin-bottom: 6px;
+}
+
+.card-genres-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-genres-row .card-label {
+    margin-bottom: 0;
+}
+
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.genre-tag {
+    background: var(--card-accent, #CDF564);
+    color: var(--card-bg, #4100F5);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.card-song-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-song-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-song-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--card-accent, #CDF564);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-song-artist {
+    font-size: 12px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+    opacity: 0.75;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-song-img {
+    width: 68px;
+    height: 68px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.artist-list {
+    margin: 4px 0 0 0;
+    padding-left: 22px;
+    color: var(--card-accent, #CDF564);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.artist-list li {
+    margin-bottom: 3px;
+}
+
+/* Recs section */
+.recs-section {
+    background: #9BF0E1;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.recs-section h2 {
+    margin: 0 0 14px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    font-style: italic;
+    color: #4100F5;
+}
+
+#noRecsMsg {
+    opacity: 0.55;
+    margin: 0;
+    color: #4100F5;
+    font-style: italic;
+}
+
+.rec-card {
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1.5px solid rgba(65, 0, 245, 0.12);
+}
+
+.rec-card:last-child {
+    margin-bottom: 0;
+}
+
+.rec-from {
+    font-size: 0.78em;
+    font-weight: 600;
+    font-style: italic;
+    color: #4100F5;
+    opacity: 0.6;
+    margin-bottom: 4px;
+}
+
+.rec-song {
+    font-size: 1.05em;
+    font-weight: 700;
+    color: #4100F5;
+    margin-bottom: 2px;
+}
+
+.rec-artist {
+    font-size: 0.88em;
+    color: #4100F5;
+    opacity: 0.65;
+    margin-bottom: 6px;
+}
+
+.rec-link {
+    display: inline-block;
+    font-size: 0.85em;
+    color: #4100F5;
+    text-decoration: none;
+    font-weight: 700;
+    margin-bottom: 6px;
+    border-bottom: 1.5px solid #4100F5;
+}
+
+.rec-link:hover {
+    opacity: 0.7;
+}
+
+.rec-note {
+    font-size: 0.9em;
+    color: #4100F5;
+    opacity: 0.75;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* Rec form */
+.rec-form-section {
+    background: #F037A5;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.rec-form-section h2 {
+    margin: 0 0 16px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 0.95em;
+    color: white;
+}
+
+.form-group input,
+.form-group textarea {
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    padding: 10px 12px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#recSubmitBtn {
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 12px 0;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    background: #CDF564;
+    color: #4100F5;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+#recSubmitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#recSubmitBtn:not(:disabled):hover {
+    opacity: 0.85;
+}
+
+#recSuccessMsg {
+    text-align: center;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+    margin: 12px 0 0 0;
+}
+
+#recNotification {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #ffffff;
+    color: #000000;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 0.95em;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+}
+
+#recNotification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}

@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background: #000000;
+}
+
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+#center-container {
+    background: var(--card-bg, #4100F5);
+    border-radius: 16px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 560px;
+}
+
+h1 {
+    margin: 0 0 28px 0;
+    font-size: 2em;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    color: var(--card-accent, #CDF564);
+}
+
+#quizForm {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.question label {
+    font-size: 1.1em;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--card-accent, #CDF564);
+}
+
+.question input[type="text"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    padding: 10px 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--card-accent, #CDF564);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.question input[type="text"]::placeholder {
+    color: var(--card-accent, #CDF564);
+    opacity: 0.5;
+}
+
+.question input[type="text"]:focus {
+    border-color: var(--card-accent, #CDF564);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#genreGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.genre-btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.genre-btn input[type="checkbox"] {
+    display: none;
+}
+
+.genre-btn span {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--card-accent, #CDF564);
+    background: transparent;
+    color: var(--card-accent, #CDF564);
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.genre-btn input[type="checkbox"]:checked + span {
+    background: var(--card-accent, #CDF564);
+    color: var(--card-bg, #4100F5);
+    border-color: var(--card-accent, #CDF564);
+}
+
+#submitBtn {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    padding: 12px 0;
+    border: none;
+    border-radius: 10px;
+    background: var(--card-accent, #CDF564);
+    color: var(--card-bg, #4100F5);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 4px;
+}
+
+#submitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#submitBtn:not(:disabled):hover {
+    opacity: 0.85;
+}
+
+.song-input-wrapper {
+    position: relative;
+}
+
+.song-input-wrapper #favSongInput {
+    width: 100%;
+}
+
+.artist-input-wrapper {
+    position: relative;
+}
+
+.artist-input-wrapper .artistInput {
+    width: 100%;
+}
+
+.artist-suggestions {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.artist-suggestions > div {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #4100F5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    transition: background 0.1s;
+}
+
+.artist-suggestions > div:last-child {
+    border-bottom: none;
+}
+
+.artist-suggestions > div:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* Song suggestion items are direct div children so they get the base styles above,
+   but their inner divs do not (> div only matches direct children) */
+.suggestion-song-name {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #4100F5;
+}
+
+.suggestion-song-artist {
+    font-size: 0.82em;
+    font-style: italic;
+    color: #4100F5;
+    opacity: 0.6;
+    margin-top: 2px;
+}

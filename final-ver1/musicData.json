@@ -1,0 +1,98 @@
+[
+  {
+    "musicGenres": [
+      "Indie",
+      "Electronic",
+      "Rock",
+      "Folk"
+    ],
+    "favoriteSong": "En Veetu Thotathil",
+    "favoriteSongArtist": "A.R. Rahman",
+    "favoriteSongImage": "https://i.scdn.co/image/ab67616d00001e02506f037f61399ad92e3df7a2",
+    "topArtists": [
+      "Fountains Of Wayne",
+      "Modest Mouse",
+      "Smallpools"
+    ],
+    "userId": "e7076de3-6c36-4974-b36a-7315789dd27a",
+    "username": "Meena Chudpathi",
+    "userHue": "88.71627607985008"
+  },
+  {
+    "musicGenres": [
+      "Pop",
+      "Indie",
+      "R&B",
+      "Hip-Hop"
+    ],
+    "favoriteSong": "COMPLEXITIES",
+    "favoriteSongArtist": "Daniel Caesar",
+    "favoriteSongImage": "https://i.scdn.co/image/ab67616d00001e02969c21ea34fe372a3e468947",
+    "topArtists": [
+      "Daniel Caesar",
+      "Erykah Badu",
+      "Brent Faiyaz"
+    ],
+    "userId": "8c5183c2-5085-41a6-a3d5-0b62803df360",
+    "username": "Sanjana",
+    "userHue": "345.7751750369632"
+  },
+  {
+    "musicGenres": [
+      "Rap",
+      "Pop",
+      "Indie",
+      "Jazz",
+      "R&B"
+    ],
+    "favoriteSong": "Moral Conscience",
+    "favoriteSongArtist": "Kali Uchis",
+    "favoriteSongImage": "https://i.scdn.co/image/ab67616d00001e0281fccd758776d16b87721b17",
+    "topArtists": [
+      "Kali Uchis",
+      "Mariah the Scientist",
+      "Hozier"
+    ],
+    "userId": "de52aa12-8d11-4a8f-a048-bfd916fdd16e",
+    "username": "Amirah",
+    "userHue": "254.29651113173006"
+  },
+  {
+    "musicGenres": [
+      "Pop",
+      "Indie",
+      "R&B",
+      "Electronic"
+    ],
+    "favoriteSong": "Primadonna",
+    "favoriteSongArtist": "MARINA",
+    "favoriteSongImage": "https://i.scdn.co/image/ab67616d00001e02203e4c6a048df02a21cdd813",
+    "topArtists": [
+      "XG",
+      "NIKI",
+      "Heize"
+    ],
+    "userId": "b6e19d4c-590f-4adb-ba17-b3f2f0131f1e",
+    "username": "Chloe",
+    "userHue": "355.91746650855436"
+  },
+  {
+    "musicGenres": [
+      "Rap",
+      "Pop",
+      "Indie",
+      "Hip-Hop"
+    ],
+    "favoriteSong": "Shades Of Cool",
+    "favoriteSongArtist": "Lana Del Rey",
+    "favoriteSongImage": "https://i.scdn.co/image/ab67616d00001e026b55c2ee78c5a47393ff8e7a",
+    "topArtists": [
+      "Lana Del Rey",
+      "Kendrick Lamar",
+      "Radiohead"
+    ],
+    "userId": "10c4e5d4-ce37-4514-9f28-a8cc7892d6a0",
+    "username": "Anika",
+    "userHue": "179.51874407441665"
+  }
+]
