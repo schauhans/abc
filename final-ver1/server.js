@@ -8,6 +8,14 @@ const portHTTPS = 4220;
 
 app.use(express.static('public'));
 
+app.get('/admin/musicData', (req, res) => {
+    res.download('musicData.json');
+});
+
+app.get('/admin/recsData', (req, res) => {
+    res.download('recsData.json');
+});
+
 const options = {
     key: fs.readFileSync("localhost-key.pem"),
     cert: fs.readFileSync("localhost.pem"),

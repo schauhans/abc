@@ -62,6 +62,10 @@ function quizSubmitted(event) {
     // collect selected genres
     let genreCheckboxes = document.querySelectorAll("#genreGrid input[type=checkbox]:checked");
     let musicGenres = Array.from(genreCheckboxes).map(cb => cb.value);
+    if (musicGenres.length === 0) {
+        alert("Please select at least one genre.");
+        return;
+    }
 
     let favoriteSong = document.querySelector("#favSongInput").value.trim();
 
@@ -131,7 +135,7 @@ function setupSongAutocomplete() {
         debounceTimer = setTimeout(async () => {
             let tracks = [];
             try {
-                const res = await fetch(`/api/search-songs?q=${encodeURIComponent(q)}`);
+                const res = await fetch(`api/search-songs?q=${encodeURIComponent(q)}`);
                 tracks = await res.json();
             } catch (err) {
                 console.error('Song autocomplete error:', err);
@@ -197,7 +201,7 @@ function setupArtistAutocomplete(input) {
         if (q.length < 2) { dropdown.innerHTML = ''; return; }
 
         debounceTimer = setTimeout(async () => {
-            const res = await fetch(`/api/search-artists?q=${encodeURIComponent(q)}`);
+            const res = await fetch(`api/search-artists?q=${encodeURIComponent(q)}`);
             const artists = await res.json();
             dropdown.innerHTML = '';
             positionDropdown();
