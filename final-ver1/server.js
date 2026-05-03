@@ -16,6 +16,12 @@ app.get('/admin/recsData', (req, res) => {
     res.download('recsData.json');
 });
 
+app.get('/admin/delete/:userId', (req, res) => {
+    musicResponses = musicResponses.filter(r => r.userId !== req.params.userId);
+    fs.writeFileSync('musicData.json', JSON.stringify(musicResponses, null, 2));
+    res.send(`Deleted ${req.params.userId}. <a href="/admin/musicData">Download updated file</a>`);
+});
+
 const options = {
     key: fs.readFileSync("localhost-key.pem"),
     cert: fs.readFileSync("localhost.pem"),
